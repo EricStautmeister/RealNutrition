@@ -1,0 +1,4 @@
+.env
+/vendor
+testenv.php
+connectionTest.php
