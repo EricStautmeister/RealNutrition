@@ -11,16 +11,13 @@
 </head>
 
 <body>
-    [if lt IE 7]>
-    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-    <![endif]
-    
     <h1>Real Nutrition</h1>
-    <form action="/sendData" method="post">
+    <form action="datahandler.php" method="post">
         <label for="meal">Meal</label>
         <input type="text" id="meal" name="meal"><br><br>
         <label for="calories">Calories</label>
         <input type="text" id="calories" name="calories"><br><br>
+        <button type="submit">Submit</button> 
     </form>
     <script src="" async defer></script>
 </body>
