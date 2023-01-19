@@ -1,5 +1,27 @@
-<?php 
+<!DOCTYPE html>
+<html>
 
-include("menu.html");
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Real Nutrition</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+</head>
 
-?>
+<body>
+    [if lt IE 7]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+    <![endif]
+    
+    <h1>Real Nutrition</h1>
+    <form action="/sendData" method="post">
+        <label for="meal">Meal</label>
+        <input type="text" id="meal" name="meal"><br><br>
+        <label for="calories">Calories</label>
+        <input type="text" id="calories" name="calories"><br><br>
+    </form>
+    <script src="" async defer></script>
+</body>
+</html>
