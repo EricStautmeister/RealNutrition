@@ -1,4 +1,9 @@
-<!DOCTYPE html>
+<?php
+
+
+?>
+
+<!-- <!DOCTYPE html>
 <html>
 
 <head>
@@ -14,12 +19,12 @@
 <body>
     <header>
         <nav>
-            <a href="/Nutrition.php">
+            <a href="/pages/Nutrition.php">
                 <button type="submit" class="button">Nutrition</button>
             </a>
         </nav>
     </header>
-    <!-- <script src="" async defer></script> -->
+    <script src="" async defer></script>
 </body>
 
-</html>
+</html> -->
