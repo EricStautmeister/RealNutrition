@@ -1,11 +1,3 @@
-<?php
-ini_set('display_errors', 0);
-
-require_once 'vendor/autoload.php';
-
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->safeLoad();
-?>
 <!DOCTYPE html>
 <html>
 
@@ -20,29 +12,13 @@ $dotenv->safeLoad();
 </head>
 
 <body>
-    <div class="container">
-        <h1>Real Nutrition</h1>
-        <form action="datahandler.php" method="post">
-            <div class="hwrapper">
-                <section class="colsec">
-                    <label for="meal">Meal</label>
-                    <label for="calories">Calories</label>
-                </section>
-                <section class="colsec">
-                    <input type="text" id="meal" name="meal">
-                    <input type="text" id="calories" name="calories">
-                </section>
-            </div>
-            <button type="submit" class="button">Submit</button>
-        </form>
-    </div>
-    <div>
-        <?php
-        include 'db.php';
-        include 'helper/functions.php';
-        include 'datahandler.php'
-        ?>
-    </div>
+    <header>
+        <nav>
+            <a href="/Nutrition.php">
+                <button type="submit" class="button">Nutrition</button>
+            </a>
+        </nav>
+    </header>
     <!-- <script src="" async defer></script> -->
 </body>
 
