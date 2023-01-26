@@ -30,7 +30,8 @@
     </div>
     <div>
         <?php
-        include 'db.php';
+        echo "Hello World";
+        include '../Api/db.php';
         ?>
     </div>
 </body>
