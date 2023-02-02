@@ -16,3 +16,16 @@ Start the dev server:
 ```
 php -S localhost:8000 -t .
 ```
+
+Database Setup:
+
+```
+CREATE DATABASE RealNutrition;
+
+CREATE TABLE `users` (
+    `id` integer NOT NULL,
+    `email` varchar(64) NOT NULL,
+    `password` varchar(64) NOT NULL,
+    PRIMARY KEY (`id`)
+);
+```

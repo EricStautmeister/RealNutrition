@@ -4,55 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa3086fba82ce8bc0b1b1550b1bff78d",
+    "content-hash": "6535dd32cf28e7080321a8cc1fe2a17f",
     "packages": [
-        {
-            "name": "erickfirmo/router",
-            "version": "1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/erickfirmo/php.router.git",
-                "reference": "1073ee239b3da474b51457718d896bdbfa5c90c1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/erickfirmo/php.router/zipball/1073ee239b3da474b51457718d896bdbfa5c90c1",
-                "reference": "1073ee239b3da474b51457718d896bdbfa5c90c1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ErickFirmo\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Érick Firmo",
-                    "email": "erickfirmo1996@gmail.com"
-                }
-            ],
-            "description": "PHP Router",
-            "keywords": [
-                "router",
-                "routing"
-            ],
-            "support": {
-                "issues": "https://github.com/erickfirmo/php.router/issues",
-                "source": "https://github.com/erickfirmo/php.router/tree/v1.1"
-            },
-            "time": "2022-05-04T17:38:11+00:00"
-        },
         {
             "name": "graham-campbell/result-type",
             "version": "v1.1.0",
