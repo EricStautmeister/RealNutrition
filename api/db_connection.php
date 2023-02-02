@@ -5,8 +5,7 @@ require_once '../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
-function dbVersion($db)
-{
+function dbVersion($db) {
     try {
         $stm = $db->query("SELECT VERSION()");
         $version = $stm->fetch();
@@ -22,7 +21,7 @@ $options = array(PDO::MYSQL_ATTR_SSL_CA => $_ENV['MYSQL_ATTR_SSL_CA'],);
 try {
     $db = new PDO($dsn, $_ENV['USERNAME'], $_ENV['PASSWORD'], $options);
     echo dbVersion($db);
-
+    echo "Connected to the database" . PHP_EOL;
     return $db;
 } catch (PDOException $error) {
     echo $error;
