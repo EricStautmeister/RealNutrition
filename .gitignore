@@ -2,3 +2,4 @@
 /vendor
 testenv.php
 connectionTest.php
+testing.php
