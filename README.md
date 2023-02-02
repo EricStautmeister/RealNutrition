@@ -1,5 +1,9 @@
 # Real Nutrition
 
+Installations: <br>
+Download the MySQL local server MSI file from [here](https://dev.mysql.com/downloads/file/?id=516926).
+
+
 Install dependencies: 
 ```
 composer install
