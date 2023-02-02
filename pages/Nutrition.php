@@ -30,7 +30,7 @@
     </div>
     <div>
         <?php
-        include '../Api/db_connection.php';
+        include '../database/db_connection.php';
         ?>
     </div>
 </body>
