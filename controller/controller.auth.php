@@ -6,7 +6,7 @@ class AuthController
 
     public function __construct()
     {
-        $this->model = new Model();
+        $this->model = new AuthModel();
     }
     public function handleRequest()
     {
@@ -20,35 +20,32 @@ class AuthController
 
     private function displayPage($args = [])
     {
+        // sets php variables and displays auth page
         extract($args);
         $type = $_SERVER["REQUEST_URI"];
-        include "auth.php";
+        include "form.testing.php";
     }
 
     private function handlePost()
     {
-        var_dump($_POST);
-
         $isclear = $this->checkRequirements();
         if ($isclear != "clear") {
             $this->displayPage(["res" => $isclear]);
             return;
         }
 
-        $isuser = $this->model->isUser($_POST["name"]);
-        if (!$isuser) {
-            $this->displayPage(["res" => "User already Exists"]);
-            return;
-        }
-
-        try {
-            if (!$this->model->setUser($_POST["name"], $_POST["pwd"])) {
-                throw new Exception("could not set user");
-            } else {
-                header("Location: /");
+        if ($_SERVER["REQUEST_URI"] == "/login") {
+            $isloggedin = $this->login();
+            if (!empty($isloggedin)) {
+                $this->displayPage(["res" => $isloggedin]);
+                return;
             }
-        } catch (Exception $e) {
-            $this->displayPage(["res" => $e->getMessage()]);
+        } else if ($_SERVER["REQUEST_URI"] == "/signup") {
+            $issignedup = $this->signup();
+            if (!empty($issignedup)) {
+                $this->displayPage(["res" => $issignedup]);
+                return;
+            }
         }
     }
 
@@ -64,17 +61,50 @@ class AuthController
             return "clear";
         }
     }
+
+    private function login()
+    {
+        $res = $this->model->checkUser($_POST["name"], $_POST["pwd"]);
+        if ($res == "clear") {
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, "/account");
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array("name" => $_POST["name"], "loggedin" => "true")));
+            curl_exec($curl);
+        } else {
+            return $res;
+        }
+    }
+
+    private function signup()
+    {
+        if ($this->model->isUser($_POST["name"])) {
+            return "User already exists";
+        } else {
+            $setuser = $this->model->setUser($_POST["name"], $_POST["pwd"]);
+            if ($setuser != "set") {
+                return $setuser;
+            } else {
+                header("Location: /");
+            }
+        }
+    }
 }
 
-class Model
+class AuthModel
 {
     public function isUser($user)
     {
-        return false;
+        return true || false;
     }
 
     public function setUser($name, $pwd)
     {
-        return false;
+        return "set" || new Exception("error message");
+    }
+
+    public function checkUser($user, $pwd)
+    {
+        return "clear" || new Exception("error message");
     }
 }
