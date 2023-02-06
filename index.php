@@ -1,11 +1,19 @@
 <?php
 
+// includes all controllers and models
 require_once "./controller/controller.home.php";
 require_once "./controller/controller.auth.php";
 
+// controller router uses a different controller for different routes
 try {
+
+    // sets a switch for the different routes
+    // and assigns the correct controller
     $request = $_SERVER["REQUEST_URI"];
     switch ($request) {
+        case "/account":
+            $controller = new HomeController();
+            break;
         case "/login":
             $controller = new AuthController();
             break;
@@ -23,6 +31,8 @@ try {
             echo "<a href='/'>Go back Home</a>";
             break;
     }
+
+    // controller now handles request and displays page base on route
     if (isset($controller)) {
         $controller->handleRequest();
     }
