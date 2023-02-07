@@ -6,7 +6,7 @@ class AuthController
 
     public function __construct()
     {
-        $this->model = new Model();
+        $this->model = new ModelCopy();
     }
     public function handleRequest()
     {
@@ -66,7 +66,7 @@ class AuthController
     }
 }
 
-class Model
+class ModelCopy
 {
     public function isUser($user)
     {

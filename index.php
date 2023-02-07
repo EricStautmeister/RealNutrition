@@ -1,7 +1,14 @@
 <?php
 
+ini_set('display_errors', 0);
+require_once './vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->safeLoad();
+require_once './model/model.php';
 require_once "./controller/controller.home.php";
 require_once "./controller/controller.auth.php";
+
+
 
 try {
     $request = $_SERVER["REQUEST_URI"];
