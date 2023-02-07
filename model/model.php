@@ -1,16 +1,26 @@
 <?php
 /* DB is a class that connects to a database and 
 has a few methods that allow you to query the database. */
+
+/**
+ * This class is used to connect to a database and query it.
+ * @package Model
+ * @version 1.0.0
+ * @access public
+ * @license MIT
+ */
 class Model
 
 {
     private $db;
     private $table;
-
-    /* Table name is taken as a parameter on model instantiation. 
-        It is stored into the table class variable. 
-        A PHP Data Object stores the Data Source Name in order to establish
-        connections with the MySQL Database. */
+    
+    /**
+     * This method is used to instantiate the Model class.
+     * @param string $table The name of the table to be used.
+     * @return void
+     * @throws PDOException on failure to connect to the database.
+     */
     function __construct($table)
     {
         $this->table = $table;
@@ -27,14 +37,19 @@ class Model
                     // PDO::MYSQL_ATTR_SSL_CA    => $_ENV['MYSQL_ATTR_SSL_CA']
                 )
             );
-            echo nl2br("Connected to the database\n");
             $this->db = $db;
         } catch (PDOException $error) {
-            echo $error->getMessage();
+            throw $error->getMessage();
         }
-        echo nl2br("db class works\r\n\n");
     }
 
+    /**
+     * This method is used to prepare the query string for the addDataToTable method.
+     * @param int $argslen The length of the array of column names.
+     * @param array $strarry The array of column names.
+     * @param string $mode The mode of the query string. Either "columns" or "values".
+     * @return string The prepared query substring.
+     */
     private function prepareQueryStringFromArgs($argslen, $strarry, $mode)
     {
         if ($mode == "columns") {
@@ -55,29 +70,29 @@ class Model
         }
     }
 
-    /* This method is used to add users to the users table. */
-    public function addUser($args = [])
+    /**
+     * This method is used to add users to the users table.
+     * @param array $args An array of ["dbtables" => $dbtables, "dbvars" => $dbvars].
+     * @param array $dbtables An array of the column names.
+     * @param array $dbvars An array of the values to be inserted into the columns.
+     * @return PDOStatement The PDOStatement object.
+     * @return PDOException The PDOException object if the query fails.
+     */
+    public function addDataToTable($args = [])
     //arg syntax: ["result" => $result, "username" => $username, "password" => $password]
     //TODO: Add a parameter for the column names to make class more generic
     {
         extract($args);
-        // var_dump($args);
-
         $columns = $this->prepareQueryStringFromArgs(count($dbtables), $dbtables, "columns");
         $values = $this->prepareQueryStringFromArgs(count($dbtables), $dbtables, "values");
         $sql_query = "INSERT INTO $this->table ($columns) VALUES ($values)";
-
-        echo nl2br("columns: $columns\r\nvalues: $values\r\n\nsql_query: $sql_query\r\n\n");
-
         try {
             $stm = $this->db->prepare($sql_query);
             // The below is potentially securer
             // $stm->bindParam(':table', $this->table);
             for ($i = 0; $i < count($dbvars); $i++) {
-                echo nl2br(":$dbtables[$i] || $dbvars[$i] -> ") . gettype($dbvars[$i]) . nl2br("\n\n");
                 $stm->bindParam(":$dbtables[$i]", $dbvars[$i]);
             }
-            echo nl2br("\n\n") . var_dump($stm);
             $stm->execute();
             return $stm;
         } catch (PDOException $error) {
@@ -85,7 +100,11 @@ class Model
         }
     }   
 
-    /* This method is used to fetch all users from the users table. */
+    /**
+     * This method is used to fetch all data from the table.
+     * @return PDOStatement Returns a PDOStatement object.
+     * @return PDOException If the query fails to execute.
+     */
     public function getAllFromTable()
     {
         try {
@@ -93,6 +112,27 @@ class Model
             $stm->bindParam(':table', $this->table);
             $stm->execute();
             return $stm;
+        } catch (PDOException $error) {
+            return $error->getMessage();
+        }
+    }
+    
+    /**
+     * This method is used to check if certain data in a column exists in a table.
+     * @param $column The column to check for data in.
+     * @param $hasData The data to check for in the column.
+     * @return bool Returns true if the data exists in the column, false otherwise.
+     * @throws PDOException If the query fails to execute.
+     */
+    public function checkDataExistence($column, $hasData)
+    {
+        try {
+            $stm = $this->db->prepare("SELECT EXISTS (SELECT * FROM $this->table 
+                                                    WHERE :column = :hasData)");
+            $stm->bindParam(':column', $column);
+            $stm->bindParam(':hasData', $hasData);
+            $res = $stm->execute();
+            return ($res == 1 ? true : false);
         } catch (PDOException $error) {
             return $error->getMessage();
         }
