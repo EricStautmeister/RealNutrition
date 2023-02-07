@@ -13,12 +13,11 @@
 
 <body>
     <header>
-        <nav>
-            <a href="/pages/Nutrition.php">
-                <button type="submit" class="button">Nutrition</button>
-            </a>
-        </nav>
+        <form action="" method="post"></form>
     </header>
+    <div>
+        <?php include '../model/model.php' ?>
+    </div>
     <script src="" async defer></script>
 </body>
 

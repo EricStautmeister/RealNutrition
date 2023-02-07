@@ -12,7 +12,7 @@
 git clone https://github.com/EricStautmeister/RealNutrition.git RealNutrition
 ```
 
-Create a .env file with credentials in `/database` in the following format:
+Create a `.env` file with credentials in the root folder in the following format:
 
 ```
 HOST=...

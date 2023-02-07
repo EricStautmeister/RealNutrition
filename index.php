@@ -1,10 +1,13 @@
 <?php
 
-// includes all controllers and models
+ini_set('display_errors', 0);
+require_once './vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->safeLoad();
+require_once './model/model.php';
 require_once "./controller/controller.home.php";
 require_once "./controller/controller.auth.php";
 
-// controller router uses a different controller for different routes
 try {
 
     // sets a switch for the different routes
