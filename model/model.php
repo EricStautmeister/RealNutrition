@@ -77,7 +77,8 @@ class Model
                 return $res;
             }
         } catch (Exception $error) {
-            throw new Exception($error->getMessage());
+            $msg = $error->getMessage();
+            throw new Exception("Query string preparation failed: $msg");
         }
     }
 
@@ -98,7 +99,8 @@ class Model
             $res = $stm->execute();
             return ($res == 1 ? true : false);
         } catch (PDOException $error) {
-            throw new Exception($error->getMessage());
+            $msg = $error->getMessage();
+            throw new Exception("Checking if data exists in database failed: $msg");
         }
     }
 
@@ -118,15 +120,14 @@ class Model
             $values = $this->prepareQueryStringFromArgs(count($dbtables), $dbtables, "values");
             $sql_query = "INSERT INTO $this->table ($columns) VALUES ($values)";
             $stm = $this->db->prepare($sql_query);
-            // The below is potentially securer
-            // $stm->bindParam(':table', $this->table);
             for ($i = 0; $i < count($dbvars); $i++) {
                 $stm->bindParam(":$dbtables[$i]", $dbvars[$i]);
             }
             $stm->execute();
             return $stm;
         } catch (PDOException $error) {
-            throw new Exception($error->getMessage());
+            $msg = $error->getMessage();
+            throw new Exception("Adding data to database failed: $msg");
         }
     }
 
@@ -144,7 +145,8 @@ class Model
             $data = $stm->fetchAll(PDO::FETCH_ASSOC);
             return $data;
         } catch (PDOException $error) {
-            throw new Exception($error->getMessage());
+            $msg = $error->getMessage();
+            throw new Exception("Fetching all data from database failed: $msg");
         }
     }
 
@@ -165,7 +167,8 @@ class Model
             $data = $stm->fetchAll(PDO::FETCH_ASSOC);
             return $stm;
         } catch (PDOException $error) {
-            throw new Exception($error->getMessage());
+            $msg = $error->getMessage();
+            throw new Exception("Fetching data from database failed: $msg");
         }
     }
 
@@ -185,7 +188,8 @@ class Model
             $stm->execute();
             return $stm;
         } catch (PDOException $error) {
-            throw new Exception($error->getMessage());
+            $msg = $error->getMessage();
+            throw new Exception("Deleting data from database failed: $msg");
         }
     }
 
@@ -207,7 +211,8 @@ class Model
             $stm->execute();
             return $stm;
         } catch (PDOException $error) {
-            throw new Exception($error->getMessage());
+            $msg = $error->getMessage();
+            throw new Exception("Updating data in database failed: $msg");
         }
     }
 }
