@@ -14,7 +14,7 @@ class Model
 {
     private $db;
     private $table;
-    
+
     /**
      * This method is used to instantiate the Model class.
      * @param string $table The name of the table to be used.
@@ -39,7 +39,7 @@ class Model
             );
             $this->db = $db;
         } catch (PDOException $error) {
-            throw $error->getMessage();
+            throw new Exception($error->getMessage());
         }
     }
 
@@ -71,53 +71,6 @@ class Model
     }
 
     /**
-     * This method is used to add users to the users table.
-     * @param array $args An array of ["dbtables" => $dbtables, "dbvars" => $dbvars].
-     * @param array $dbtables An array of the column names.
-     * @param array $dbvars An array of the values to be inserted into the columns.
-     * @return PDOStatement The PDOStatement object.
-     * @return PDOException The PDOException object if the query fails.
-     */
-    public function addDataToTable($args = [])
-    //arg syntax: ["result" => $result, "username" => $username, "password" => $password]
-    //TODO: Add a parameter for the column names to make class more generic
-    {
-        extract($args);
-        $columns = $this->prepareQueryStringFromArgs(count($dbtables), $dbtables, "columns");
-        $values = $this->prepareQueryStringFromArgs(count($dbtables), $dbtables, "values");
-        $sql_query = "INSERT INTO $this->table ($columns) VALUES ($values)";
-        try {
-            $stm = $this->db->prepare($sql_query);
-            // The below is potentially securer
-            // $stm->bindParam(':table', $this->table);
-            for ($i = 0; $i < count($dbvars); $i++) {
-                $stm->bindParam(":$dbtables[$i]", $dbvars[$i]);
-            }
-            $stm->execute();
-            return $stm;
-        } catch (PDOException $error) {
-            return $error->getMessage() . PHP_EOL;
-        }
-    }   
-
-    /**
-     * This method is used to fetch all data from the table.
-     * @return PDOStatement Returns a PDOStatement object.
-     * @return PDOException If the query fails to execute.
-     */
-    public function getAllFromTable()
-    {
-        try {
-            $stm = $this->db->prepare("SELECT * FROM :table");
-            $stm->bindParam(':table', $this->table);
-            $stm->execute();
-            return $stm;
-        } catch (PDOException $error) {
-            return $error->getMessage();
-        }
-    }
-    
-    /**
      * This method is used to check if certain data in a column exists in a table.
      * @param $column The column to check for data in.
      * @param $hasData The data to check for in the column.
@@ -134,7 +87,116 @@ class Model
             $res = $stm->execute();
             return ($res == 1 ? true : false);
         } catch (PDOException $error) {
+            throw new Exception($error->getMessage());
+        }
+    }
+
+    /**
+     * This method is used to add users to the users table.
+     * @param array $args An array of ["dbtables" => $dbtables, "dbvars" => $dbvars].
+     * @param array $dbtables An array of the column names.
+     * @param array $dbvars An array of the values to be inserted into the columns.
+     * @return PDOStatement The PDOStatement object.
+     * @return PDOException The PDOException object if the query fails.
+     */
+    public function addDataToTable($args = [])
+    {
+        extract($args);
+        $columns = $this->prepareQueryStringFromArgs(count($dbtables), $dbtables, "columns");
+        $values = $this->prepareQueryStringFromArgs(count($dbtables), $dbtables, "values");
+        $sql_query = "INSERT INTO $this->table ($columns) VALUES ($values)";
+        try {
+            $stm = $this->db->prepare($sql_query);
+            // The below is potentially securer
+            // $stm->bindParam(':table', $this->table);
+            for ($i = 0; $i < count($dbvars); $i++) {
+                $stm->bindParam(":$dbtables[$i]", $dbvars[$i]);
+            }
+            $stm->execute();
+            return $stm;
+        } catch (PDOException $error) {
+            throw new Exception($error->getMessage());
+        }
+    }
+
+    /**
+     * This method is used to fetch all data from the table.
+     * @return PDOStatement Returns a PDOStatement object.
+     * @return PDOException If the query fails to execute.
+     */
+
+    public function getAllDataFromTable()
+    {
+        try {
+            $stm = $this->db->prepare("SELECT * FROM $this->table");
+            $stm->execute();
+            $data = $stm->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
+        } catch (PDOException $error) {
+            throw new Exception($error->getMessage());
+        }
+    }
+
+    /**
+     * This method is used to fetch data from the table.
+     * @param $column The column to check for data in.
+     * @param $data The data to check for in the column.
+     * @return PDOStatement Returns a PDOStatement object.
+     * @return PDOException If the query fails to execute.
+     */
+    public function getDataFromTable($column, $data)
+    {
+        try {
+                $stm = $this->db->prepare("SELECT * FROM $this->table WHERE $column = :hasData");
+                // $stm->bindParam(':column', $column);
+                $stm->bindParam(':hasData', $data);
+                $stm->execute();
+                $data = $stm->fetchAll(PDO::FETCH_ASSOC);
+                return $stm;
+        } catch (PDOException $error) {
             return $error->getMessage();
+        }
+    }
+
+    /**
+     * This method is used to delete data from the table.
+     * @param $column The column to check for data in.
+     * @param $data The data to check for in the column.
+     * @return PDOStatement Returns a PDOStatement object.
+     * @return PDOException If the query fails to execute.
+     */
+    public function deleteDataFromTable($column, $data)
+    {
+        try {
+            $stm = $this->db->prepare("DELETE FROM $this->table WHERE :column = :hasData");
+            $stm->bindParam(':column', $column);
+            $stm->bindParam(':hasData', $data);
+            $stm->execute();
+            return $stm;
+        } catch (PDOException $error) {
+            return $error->getMessage();
+        }
+    }
+
+    /**
+     * This method is used to update data in the table.
+     * @param $column The column to check for data in.
+     * @param $data The data to check for in the column.
+     * @param $newData The new data to update the column with.
+     * @return PDOStatement Returns a PDOStatement object.
+     * @return PDOException If the query fails to execute.
+     */
+    public function updateDataFromTable($column, $data, $newData)
+    {
+        try {
+            $stm = $this->db->prepare("UPDATE $this->table SET :column = :newData WHERE :column = :hasData");
+            $stm->bindParam(':column', $column);
+            $stm->bindParam(':hasData', $data);
+            $stm->bindParam(':newData', $newData);
+            $stm->execute();
+            return $stm;
+        } catch (PDOException $error) {
+            throw new Exception($error->getMessage());
         }
     }
 }
