@@ -50,7 +50,7 @@ class Model
      * @throws Exception If the number of arguments is less than 1 or the mode is not "columns" or "values".
      * @throws Exception If the mode is "columns" and the number of arguments is less than 1.
      */
-    private function prepareQueryStringFromArgs($argslen, $strarry, $mode)
+    private function prepareQueryStringFromArgs($argslen, $strarry, $mode): string
     {
 
         if ($argslen < 1) {
@@ -80,16 +80,17 @@ class Model
             $msg = $error->getMessage();
             throw new Exception("Query string preparation failed: $msg");
         }
+        return "";
     }
 
     /**
      * This method is used to check if certain data in a column exists in a table.
      * @param $column The column to check for data in.
      * @param $hasData The data to check for in the column.
-     * @return bool Returns true if the data exists in the column, false otherwise.
+     * @return bool True if the data exists, false if it does not.
      * @throws PDOException If the query fails to execute.
      */
-    public function checkDataExistence($column, $hasData)
+    public function checkDataExistence($column, $hasData): bool
     {
         try {
             $stm = $this->db->prepare("SELECT EXISTS (SELECT * FROM $this->table 
@@ -112,7 +113,7 @@ class Model
      * @return PDOStatement The PDOStatement object.
      * @throws PDOException The PDOException object if the query fails.
      */
-    public function addDataToTable($args = [])
+    public function addDataToTable($args = []): PDOStatement
     {
         try {
             extract($args);
@@ -137,7 +138,7 @@ class Model
      * @return PDOException If the query fails to execute.
      */
 
-    public function getAllDataFromTable()
+    public function getAllDataFromTable(): array
     {
         try {
             $stm = $this->db->prepare("SELECT * FROM $this->table");
@@ -154,10 +155,10 @@ class Model
      * This method is used to fetch data from the table.
      * @param $column The column to check for data in.
      * @param $data The data to check for in the column.
-     * @return PDOStatement Returns a PDOStatement object.
+     * @return array Returns an array of the data.
      * @throws PDOException If the query fails to execute.
      */
-    public function getDataFromTable($column, $data)
+    public function getDataFromTable($column, $data): array
     {
         try {
             $stm = $this->db->prepare("SELECT * FROM $this->table WHERE $column = :hasData");
@@ -165,7 +166,7 @@ class Model
             $stm->bindParam(':hasData', $data);
             $stm->execute();
             $data = $stm->fetchAll(PDO::FETCH_ASSOC);
-            return $stm;
+            return $data;
         } catch (PDOException $error) {
             $msg = $error->getMessage();
             throw new Exception("Fetching data from database failed: $msg");
@@ -179,7 +180,7 @@ class Model
      * @return PDOStatement Returns a PDOStatement object.
      * @throws PDOException If the query fails to execute.
      */
-    public function deleteDataFromTable($column, $data)
+    public function deleteDataFromTable($column, $data): PDOStatement
     {
         try {
             $stm = $this->db->prepare("DELETE FROM $this->table WHERE :column = :hasData");
@@ -201,7 +202,7 @@ class Model
      * @return PDOStatement Returns a PDOStatement object.
      * @throws PDOException If the query fails to execute.
      */
-    public function updateDataFromTable($column, $data, $newData)
+    public function updateDataFromTable($column, $data, $newData): PDOStatement
     {
         try {
             $stm = $this->db->prepare("UPDATE $this->table SET :column = :newData WHERE :column = :hasData");

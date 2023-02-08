@@ -5,6 +5,16 @@ require_once "model.php";
  * This class is the model for the user table.
  * It extends the model class and uses the methods from the model class.
  * It also has its own methods that are specific to the user table.
+ * The following methods are available:
+ * - validateUser() - validates a users inputed data against the database.
+ *                    It makes use of the following methods:
+ *                    - checkUserExistence()
+ *                    - getUser()
+ * - checkUserExistence() - checks if a user exists in the database.
+ * - addUser() - adds a user to the database.
+ * - getUser() - gets a user from the database.
+ * - deleteUser() - deletes a user from the database.
+ * - updateUser() [incomplete] - updates a users data in the database.
  * @package model
  * @subpackage user.model
  * @version 1.0.0
@@ -27,7 +37,7 @@ class UserModel extends Model
      * @return bool True if the user exists, false if the user does not exist.
      * @return PDOException on failure to connect to the database.
      */
-    public function checkUserExistence($email)
+    public function checkUserExistence($email): bool|string 
     {
         try {
             $exists = $this->checkDataExistence("email", $email);
@@ -80,7 +90,7 @@ class UserModel extends Model
     public function deleteUser($email)
     {
         try {
-            $this->deleteDataFromTable("email" , $email);
+            $this->deleteDataFromTable("email", $email);
             return true;
         } catch (PDOException $error) {
             return false;
@@ -114,8 +124,8 @@ class UserModel extends Model
         $emailexists = $this->checkUserExistence($email);
         if ($emailexists) {
             $user = $this->getUser($email);
-            // password_verify() is a PHP function that verifies a password against a hash.
-            if ($password == $user["password"]) {
+            // password_verify() is a PHP function that verifies a password against a hash. 
+            if ($password == $user[0]["password"]) {
                 return true;
             }
         }
