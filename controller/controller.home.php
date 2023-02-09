@@ -6,6 +6,6 @@ class HomeController
     {
         // sets php variables and displays homepage
         $title = "brahhello";
-        include "view/home.php";
+        include "model/testenv.php";
     }
 }

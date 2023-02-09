@@ -28,11 +28,7 @@
             <button type="submit" class="button">Submit</button>
         </form>
     </div>
-    <div>
-        <?php
-        include '../database/db_connection.php';
-        ?>
-    </div>
+
 </body>
 
 </html>
