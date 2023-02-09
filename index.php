@@ -3,6 +3,7 @@
 // includes all controllers and models
 require_once "./controller/controller.home.php";
 require_once "./controller/controller.auth.php";
+require_once "./controller/controller.dashboard.php";
 
 // controller router uses a different controller for different routes
 try {
@@ -11,8 +12,8 @@ try {
     // and assigns the correct controller
     $request = $_SERVER["REQUEST_URI"];
     switch ($request) {
-        case "/account":
-            $controller = new HomeController();
+        case "/dashboard":
+            $controller = new DashboardController();
             break;
         case "/login":
             $controller = new AuthController();

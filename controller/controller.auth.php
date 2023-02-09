@@ -1,5 +1,7 @@
 <?php
 
+require_once "./controller/controller.dashboard.php";
+
 class AuthController
 {
     private $model;
@@ -66,11 +68,9 @@ class AuthController
     {
         $res = $this->model->checkUser($_POST["name"], $_POST["pwd"]);
         if ($res == "clear") {
-            $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, "/account");
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query(array("name" => $_POST["name"], "loggedin" => "true")));
-            curl_exec($curl);
+            $e = new DashboardController();
+            $e->loginUser($_POST["name"]);
+            header("Location: /dashboard");
         } else {
             return $res;
         }
@@ -85,7 +85,7 @@ class AuthController
             if ($setuser != "set") {
                 return $setuser;
             } else {
-                header("Location: /");
+                $this->login();
             }
         }
     }
@@ -95,16 +95,19 @@ class AuthModel
 {
     public function isUser($user)
     {
-        return true || false;
+        return false;
+        // return true || false;
     }
 
     public function setUser($name, $pwd)
     {
-        return "set" || new Exception("error message");
+        return "set";
+        // return "set" || new Exception("error message");
     }
 
     public function checkUser($user, $pwd)
     {
-        return "clear" || new Exception("error message");
+        return "clear";
+        // return "clear" || new Exception("error message");
     }
 }
