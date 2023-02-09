@@ -19,7 +19,7 @@ class Model
      * @return void
      * @throws PDOException on failure to connect to the database.
      */
-    function __construct($table)
+    function __construct( string $table )
     {
         $this->table = $table;
         try {
@@ -41,21 +41,23 @@ class Model
         }
     }
 
-    private function checkConnection()
+    private function checkConnection() : void
     {
         if (!$this->db) {
             throw new Exception("Not connected to the database.");
         }
     }
 
-    public function checkColumnExists($column): bool
+    public function checkColumnExists(string $column): bool
     {
+        // Build the query to check if the column exists
         $query = "SELECT * FROM information_schema.columns WHERE table_name = :table AND column_name = :column";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(":table", $this->table);
         $stmt->bindParam(":column", $column);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        // If the column exists, return true, otherwise return false
         if ($result) {
             return true;
         } else {
@@ -72,9 +74,9 @@ class Model
      * @throws Exception If the number of arguments is less than 1 or the mode is not "columns" or "values".
      * @throws Exception If the mode is "columns" and the number of arguments is less than 1.
      */
-    private function prepareQueryStringFromArgs($argslen, $strarry, $mode): string
+    private function prepareQueryStringFromArgs(array $args, string $mode): string
     {
-        if ($argslen < 1) {
+        if (count($args) < 1) {
             throw new Exception("The number of arguments must be greater than 0.");
         }
         if ($mode != "columns" && $mode != "values") {
@@ -82,11 +84,11 @@ class Model
         }
         try {
             $res = "";
-            for ($i = 0; $i < $argslen; $i++) {
+            foreach ($args as $arg) {
                 if ($mode == "columns") {
-                    $res .= $strarry[$i] . ", ";
+                    $res .= $arg . ", ";
                 } else if ($mode == "values") {
-                    $res .= ":" . $strarry[$i] . ", ";
+                    $res .= ":" . $arg . ", ";
                 }
             }
             $res = substr($res, 0, -2);
@@ -103,7 +105,7 @@ class Model
      * @return bool True if the data exists, false if it does not.
      * @throws PDOException If the query fails to execute.
      */
-    public function checkDataExistence($column, $hasData): bool
+    public function checkDataExistence(string $column, string $hasData): bool
     {
         try {
             $this->checkConnection();
@@ -131,11 +133,11 @@ class Model
      * @return PDOStatement The PDOStatement object.
      * @throws PDOException The PDOException object if the query fails.
      */
-     public function addDataToTable($args = []): PDOStatement
+    public function addDataToTable(array $args = []): PDOStatement
     {
         extract($args);
-        $columns = $this->prepareQueryStringFromArgs(count($dbtables), $dbtables, "columns");
-        $values = $this->prepareQueryStringFromArgs(count($dbtables), $dbtables, "values");
+        $columns = $this->prepareQueryStringFromArgs($dbtables, "columns");
+        $values = $this->prepareQueryStringFromArgs($dbtables, "values");
         $sql_query = "INSERT INTO $this->table ($columns) VALUES ($values)";
         $stm = $this->db->prepare($sql_query);
         for ($i = 0; $i < count($dbvars); $i++) {
@@ -209,7 +211,7 @@ class Model
      * @return PDOStatement Returns a PDOStatement object.
      * @throws PDOException If the query fails to execute.
      */
-    public function deleteDataFromTable($column, $data): PDOStatement
+    public function deleteDataFromTable(string $column, string $data): PDOStatement
     {
         $stm = $this->db->prepare("DELETE FROM $this->table WHERE :column = :hasData");
         $stm->bindParam(':column', $column);
@@ -217,9 +219,8 @@ class Model
         $stm->execute();
         if ($stm->rowCount() > 0) {
             return $stm;
-        } else {
-            throw new Exception("Delete failed");
         }
+        throw new Exception("Delete failed");
     }
 
     /**
@@ -230,7 +231,7 @@ class Model
      * @return PDOStatement Returns a PDOStatement object.
      * @throws PDOException If the query fails to execute.
      */
-    public function updateDataFromTable($column, $data, $newData): PDOStatement
+    public function updateDataFromTable(string $column, string $data, string $newData): PDOStatement
     {
         $sql = "UPDATE $this->table SET :column = :newData WHERE :column = :hasData";
         $stm = $this->db->prepare($sql);

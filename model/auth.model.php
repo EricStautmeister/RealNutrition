@@ -16,10 +16,10 @@ require_once "model.php";
  * - deleteUser() - deletes a user from the database.
  * - updateUser() [incomplete] - updates a users data in the database.
  * @package model
- * @subpackage user.model
+ * @subpackage auth.model
  * @version 1.0.0
  */
-class UserModel extends Model
+class AuthModel extends Model
 {
     /**
      * This method is used to instantiate the UserModel class.
@@ -28,7 +28,7 @@ class UserModel extends Model
      */
     public function __construct()
     {
-        parent::__construct("users");
+        parent::__construct("auth");
     }
 
     /**
@@ -37,7 +37,7 @@ class UserModel extends Model
      * @return bool True if the user exists, false if the user does not exist.
      * @return PDOException on failure to connect to the database.
      */
-    public function checkUserExistence($email): bool|string 
+    public function checkUserExistence(string $email): bool|string
     {
         try {
             $exists = $this->checkDataExistence("email", $email);
@@ -53,7 +53,7 @@ class UserModel extends Model
      * @param string $password The password of the user.
      * @return bool True if the user was added, false if the user was not added.
      */
-    public function addUser($email, $password)
+    public function addUser(string $email, string $password) : bool
     {
         try {
             $dbtables = ["email", "password"];
@@ -70,7 +70,7 @@ class UserModel extends Model
      * @param string $email The email of the user.
      * @return array The user data.
      */
-    public function getUser($email)
+    public function getUser(string $email)
     {
         try {
             $user = $this->getDataFromTable("email", $email);
@@ -87,7 +87,7 @@ class UserModel extends Model
      * @param string $email The email of the user.
      * @return bool True if the user was deleted, false if the user was not deleted.
      */
-    public function deleteUser($email)
+    public function deleteUser(string $email)
     {
         try {
             $this->deleteDataFromTable("email", $email);
@@ -103,11 +103,14 @@ class UserModel extends Model
      * @param string $password The hashed password of the user. 
      * @return bool True if the user was updated, false if the user was not updated.
      */
-    public function updateUser($email, $password)
+    public function updateUser(string $email, string $password): bool
     {
         try {
             $updatedUser = $this->updateDataFromTable("email", $email, "password", $password);
-            return true;
+            if (!$updatedUser) {
+                throw new PDOException("There was an error updating the user.");
+            }
+            return $updatedUser;
         } catch (PDOException $error) {
             return false;
         }
@@ -119,16 +122,20 @@ class UserModel extends Model
      * @param string $password The hashed password of the user
      * @return bool True if the users data matches the data in the database, else false. 
      */
-    public function validateUser($email, $password)
+    public function validateUser(string $email, string $password): bool|string
     {
-        $emailexists = $this->checkUserExistence($email);
-        if ($emailexists) {
-            $user = $this->getUser($email);
-            // password_verify() is a PHP function that verifies a password against a hash. 
-            if ($password == $user[0]["password"]) {
-                return true;
-            }
+        try {
+            $emailexists = $this->checkUserExistence($email);
+        } catch (PDOException $error) {
+            return $error->getMessage();
         }
-        return false;
+        if (!$emailexists) {
+            return "Email does not exist.";
+        }
+        $user = $this->getUser($email);
+        if ($password != $user[0]["password"]) {
+            return "Password is incorrect.";
+        }
+        return true;
     }
 }
