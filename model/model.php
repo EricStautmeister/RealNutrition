@@ -99,6 +99,24 @@ class Model
     }
 
     /**
+     * This method is used to create a table in the database.
+     * @param array $columns
+     * @param array $types
+     * @return void
+     */
+    public function createTable(array $columns, array $types): void
+    {
+        $this->checkConnection();
+        $query = "CREATE TABLE IF NOT EXISTS `{$this->table}` (";
+        for ($i = 0; $i < count($columns); $i++) {
+            $query .= "`{$columns[$i]}` {$types[$i]},";
+        }
+        $query .= "PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+    }
+
+    /**
      * This method is used to check if certain data in a column exists in a table.
      * @param $column The column to check for data in.
      * @param $hasData The data to check for in the column.
