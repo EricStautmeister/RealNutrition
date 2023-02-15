@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
--   VS Code
+-   [VS Code](https://code.visualstudio.com/download)
 -   PHP ^8.0
 -   Composer
 
