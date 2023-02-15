@@ -17,6 +17,7 @@ Create a `.env` file with credentials in the root folder in the following format
 
 ```
 HOST=...
+PORT=...
 USERNAME=...
 PASSWORD=...
 DATABASE=...
@@ -38,10 +39,10 @@ Create a file called something like `setup.sql` with the following contents:
 ```
 CREATE DATABASE RealNutrition;
 
-CREATE TABLE `users` (
-    `id` integer NOT NULL,
-    `email` varchar(64) NOT NULL,
-    `password` varchar(64) NOT NULL,
+CREATE TABLE IF NOT EXISTS `auth` (
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `email` varchar(255) NOT NULL,
+    `password` varchar(255) NOT NULL,
     PRIMARY KEY (`id`)
 );
 ```
@@ -54,7 +55,7 @@ composer install
 ```
 
 ## Run the server in developer mode
-
+Run the following command in the terminal, then navigate to `localhost:8000` in the browser. 
 ```
 php -S localhost:8000 -t .
 ```
