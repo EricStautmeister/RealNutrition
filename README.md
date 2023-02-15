@@ -63,11 +63,11 @@ Run the following command in the terminal, then navigate to `localhost:8000` in 
 php -S localhost:8000 -t .
 ```
 
-#### PHP Installation
+### PHP Installation
 
 
 
-##### On Windows:
+#### On Windows:
 Go to https://www.php.net/downloads and download php 8.0^.
 If you are on windows, get the thread safe version. 
 
@@ -81,7 +81,7 @@ Copy the path to the folder (`C:\php`).
 
 Now PHP should be installed on your mashine, test it out by opening a terminal window (`Win + R` and `cmd`), and typing out `php -v`. If no errors occur, php is installed. 
 
-##### On linux:
+#### On linux:
 Enter the following commands one at a time. 
 ```
 sudo apt-get update
@@ -92,7 +92,7 @@ php --version
 If no errors occur, php is installed correctly. 
 
 
-#### Composer Installation
+### Composer Installation
 Open a terminal window (`Win + R` and `cmd`)`and paste the following:
 ```
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -102,7 +102,7 @@ php -r "unlink('composer-setup.php');"
 ```
 Move the `composer.phar` file to a directory on your PATH so you can simply call composer from any directory (Global install). 
 I will recommend the following:
-On Windows: 
+##### On Windows: 
 Enter the following into the terminal: 
 ```
 move .\composer.phar C:\php\composer.phar
@@ -110,7 +110,7 @@ cd C:\
 echo @php "%~dp0composer.phar" %*>composer.bat
 ```
 
-On linux:
+##### On linux
 Enter the following into the terminal: 
 ```
 sudo mv composer.phar /usr/local/bin/composer
