@@ -125,9 +125,9 @@ class AuthModelWrapper extends Model
      */
     public function validateUser(string $email, string $password): bool|string
     {
+        //TODO: Different error messages for information security.
         try {
             $emailexists = $this->checkUserExistence($email);
-            echo "emailexists:" . var_dump($emailexists) . PHP_EOL;
         } catch (PDOException $error) {
             return $error->getMessage();
         }

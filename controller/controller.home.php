@@ -5,6 +5,6 @@ class HomeController
     public function handleRequest()
     {
         $title = "brahhello";
-        include "view/home.php";
+        include "model/testenv.php";
     }
 }

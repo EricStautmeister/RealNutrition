@@ -132,11 +132,9 @@ class Model
             }
             $stm = $this->db->prepare("SELECT EXISTS (SELECT * FROM $this->table 
                                                     WHERE $column = :hasData)");
-            // $stm->bindParam(':column', $column);
             $stm->bindParam(':hasData', $hasData);
             $stm->execute();
             $res = $stm->fetch();
-            echo nl2br($res[0]) . PHP_EOL;
             return ($res[0] == 1 ? true : false);
         } catch (PDOException $error) {
             $msg = $error->getMessage();
