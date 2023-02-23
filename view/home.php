@@ -15,6 +15,9 @@
     <header>
         <form action="" method="post"></form>
     </header>
+    <div>
+        <?php include '../model/model.php' ?>
+    </div>
     <script src="" async defer></script>
 </body>
 
