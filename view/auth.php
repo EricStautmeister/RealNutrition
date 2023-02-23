@@ -12,8 +12,9 @@
 </head>
 
 <body>
-    <header>
-    </header>
+    <p>Auth</p>
+
+
     <script src="" async defer></script>
 </body>
 
