@@ -1,14 +1,19 @@
 <?php
 
 require_once "./controller/controller.dashboard.php";
+require_once "./model/user.model.php";
 
 class AuthController
 {
     private $model;
+    private $name;
+    private $pwd;
 
     public function __construct()
     {
-        $this->model = new AuthModel();
+        $this->model = new UserModel();
+        $this->name = "name";
+        $this->pwd = "pwd";
     }
     public function handleRequest()
     {
@@ -53,11 +58,9 @@ class AuthController
 
     private function checkRequirements()
     {
-        $name = "name";
-        $pwd = "pwd";
-        if (empty($_POST[$name])) {
+        if (empty($_POST[$this->name])) {
             return "Name required";
-        } else if (empty($_POST[$pwd])) {
+        } else if (empty($_POST[$this->pwd])) {
             return "Password requierd";
         } else {
             return "clear";
@@ -66,48 +69,29 @@ class AuthController
 
     private function login()
     {
-        $res = $this->model->checkUser($_POST["name"], $_POST["pwd"]);
-        if ($res == "clear") {
+        // $this->model->validateUser($_POST[$this->name], $_POST[$this->pwd])
+        if ($this->name == "name") {
             $e = new DashboardController();
-            $e->loginUser($_POST["name"]);
+            $e->loginUser($_POST[$this->name]);
             header("Location: /dashboard");
         } else {
-            return $res;
+            return;
         }
     }
 
     private function signup()
     {
-        if ($this->model->isUser($_POST["name"])) {
+        // $this->model->isUser($_POST[$this->name])
+        if ($this->pwd == "heya") {
             return "User already exists";
         } else {
-            $setuser = $this->model->setUser($_POST["name"], $_POST["pwd"]);
+            // $setuser = $this->model->setUser($_POST["name"], $_POST["pwd"]);
+            $setuser = "set";
             if ($setuser != "set") {
                 return $setuser;
             } else {
                 $this->login();
             }
         }
-    }
-}
-
-class AuthModel
-{
-    public function isUser($user)
-    {
-        return false;
-        // return true || false;
-    }
-
-    public function setUser($name, $pwd)
-    {
-        return "set";
-        // return "set" || new Exception("error message");
-    }
-
-    public function checkUser($user, $pwd)
-    {
-        return "clear";
-        // return "clear" || new Exception("error message");
     }
 }
