@@ -41,6 +41,15 @@ class Model
         }
     }
 
+    function checkConnection()
+    {
+        if ($this->db) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * This method is used to prepare the query string for the addDataToTable method.
      * @param int $argslen The length of the array of column names.
@@ -104,10 +113,10 @@ class Model
         try {
             $stm = $this->db->prepare("SELECT EXISTS (SELECT * FROM $this->table 
                                                     WHERE $column = :hasData)");
-            // $stm->bindParam(':column', $column);
             $stm->bindParam(':hasData', $hasData);
-            $res = $stm->execute();
-            return ($res == 1 ? true : false);
+            $stm->execute();
+            $res = $stm->fetch();
+            return ($res[0] == 1 ? true : false);
         } catch (PDOException $error) {
             $msg = $error->getMessage();
             throw new Exception("Checking if data exists in database failed: $msg");
