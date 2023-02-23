@@ -19,7 +19,7 @@ class Model
      * @return void
      * @throws PDOException on failure to connect to the database.
      */
-    function __construct( string $table )
+    function __construct($table)
     {
         $this->table = $table;
         try {
@@ -38,30 +38,6 @@ class Model
             $this->db = $db;
         } catch (PDOException $error) {
             throw new Exception($error->getMessage());
-        }
-    }
-
-    private function checkConnection() : void
-    {
-        if (!$this->db) {
-            throw new Exception("Not connected to the database.");
-        }
-    }
-
-    public function checkColumnExists(string $column): bool
-    {
-        // Build the query to check if the column exists
-        $query = "SELECT * FROM information_schema.columns WHERE table_name = :table AND column_name = :column";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(":table", $this->table);
-        $stmt->bindParam(":column", $column);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        // If the column exists, return true, otherwise return false
-        if ($result) {
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -126,17 +102,12 @@ class Model
     public function checkDataExistence(string $column, string $hasData): bool
     {
         try {
-            $this->checkConnection();
-            if (!$this->checkColumnExists($column)){
-                throw new Exception("The column $column does not exist in the table $this->table.");
-            }
             $stm = $this->db->prepare("SELECT EXISTS (SELECT * FROM $this->table 
-                                                    WHERE :column = :hasData)");
-            $stm->bindParam(':column', $column);
+                                                    WHERE $column = :hasData)");
+            // $stm->bindParam(':column', $column);
             $stm->bindParam(':hasData', $hasData);
-            $stm->execute();
-            $res = $stm->fetch();
-            return ($res[0] == 1 ? true : false);
+            $res = $stm->execute();
+            return ($res == 1 ? true : false);
         } catch (PDOException $error) {
             $msg = $error->getMessage();
             throw new Exception("Checking if data exists in database failed: $msg");
@@ -198,28 +169,17 @@ class Model
      */
     public function getDataFromTable(string $column, string $data): array
     {
-        if (empty($column) || empty($data)) {
-            return [];
+        try {
+            $stm = $this->db->prepare("SELECT * FROM $this->table WHERE $column = :hasData");
+            // $stm->bindParam(':column', $column);
+            $stm->bindParam(':hasData', $data);
+            $stm->execute();
+            $data = $stm->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
+        } catch (PDOException $error) {
+            $msg = $error->getMessage();
+            throw new Exception("Fetching data from database failed: $msg");
         }
-    
-        $stm = $this->db->prepare("SELECT * FROM $this->table WHERE $column = :hasData");
-        if ($stm === false) {
-            throw new Exception('Could not prepare statement.');
-        }
-    
-        $result = $stm->execute([
-            ':hasData' => $data,
-        ]);
-        if ($result === false) {
-            throw new Exception('Could not execute statement.');
-        }
-    
-        $rows = $stm->fetchAll(PDO::FETCH_ASSOC);
-        if ($rows === false) {
-            throw new Exception('Could not fetch rows.');
-        }
-    
-        return $rows;
     }
 
     /**
