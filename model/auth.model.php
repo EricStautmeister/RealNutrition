@@ -19,7 +19,7 @@ require_once "model.php";
  * @subpackage auth.model
  * @version 1.0.0
  */
-class AuthModel extends Model
+class AuthModelWrapper extends Model
 {
     /**
      * This method is used to instantiate the UserModel class.
@@ -41,6 +41,7 @@ class AuthModel extends Model
     {
         try {
             $exists = $this->checkDataExistence("email", $email);
+
             return $exists;
         } catch (PDOException $error) {
             return $error->getMessage();
@@ -126,6 +127,7 @@ class AuthModel extends Model
     {
         try {
             $emailexists = $this->checkUserExistence($email);
+            echo "emailexists:" . var_dump($emailexists) . PHP_EOL;
         } catch (PDOException $error) {
             return $error->getMessage();
         }
