@@ -1,7 +1,7 @@
 <?php
 
 require_once "./controller/controller.dashboard.php";
-require_once "./model/user.model.php";
+// require_once "./model/user.model.php";
 
 class AuthController
 {
@@ -11,13 +11,12 @@ class AuthController
 
     public function __construct()
     {
-        $this->model = new UserModel();
+        // $this->model = new UserModel();
         $this->name = "name";
         $this->pwd = "pwd";
     }
     public function handleRequest()
     {
-
         if (empty($_POST)) {
             $this->displayPage();
         } else {
@@ -55,13 +54,12 @@ class AuthController
             }
         }
     }
-
     private function checkRequirements()
     {
         if (empty($_POST[$this->name])) {
             return "Name required";
         } else if (empty($_POST[$this->pwd])) {
-            return "Password requierd";
+            return "Password required";
         } else {
             return "clear";
         }

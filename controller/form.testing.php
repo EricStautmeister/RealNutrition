@@ -23,9 +23,13 @@
 
     <form action="<?php $type ?>" method="post">
 
-        Input: <input type="email" name="name" value="<?php $name ?>">
+        Input: <input type="email" name="name" value="<?php $name ?>"> <?php if ($res == "Name required") {
+                                                                            echo $res;
+                                                                        } ?>
 
-        Pass: <input type="password" name="pwd">
+        Pass: <input type="password" name="pwd"> <?php if ($res == "Password required") {
+                                                        echo $res;
+                                                    } ?>
 
         <input type="submit" name="submit" value="text_submit">
 
@@ -33,10 +37,6 @@
 
     <?php if ($type == "/login") {
         echo "<a href='/signup'>Sign Up</a>";
-    } ?>
-
-    <?php if (isset($res)) {
-        echo $res;
     } ?>
 
     <script src="" async defer></script>
