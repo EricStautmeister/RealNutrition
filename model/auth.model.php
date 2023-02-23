@@ -54,7 +54,7 @@ class AuthModelWrapper extends Model
      * @param string $password The password of the user.
      * @return bool True if the user was added, false if the user was not added.
      */
-    public function addUser(string $email, string $password) : bool
+    public function addUser(string $email, string $password): bool
     {
         try {
             $dbtables = ["email", "password"];

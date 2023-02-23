@@ -39,6 +39,10 @@
         echo "<a href='/signup'>Sign Up</a>";
     } ?>
 
+    <?php
+    echo $err;
+    ?>
+
     <script src="" async defer></script>
 
 </body>
