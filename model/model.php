@@ -19,7 +19,7 @@ class Model
      * @return void
      * @throws PDOException on failure to connect to the database.
      */
-    function __construct($table)
+    function __construct( string $table )
     {
         $this->table = $table;
         try {
@@ -41,6 +41,30 @@ class Model
         }
     }
 
+    private function checkConnection() : void
+    {
+        if (!$this->db) {
+            throw new Exception("Not connected to the database.");
+        }
+    }
+
+    public function checkColumnExists(string $column): bool
+    {
+        // Build the query to check if the column exists
+        $query = "SELECT * FROM information_schema.columns WHERE table_name = :table AND column_name = :column";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(":table", $this->table);
+        $stmt->bindParam(":column", $column);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        // If the column exists, return true, otherwise return false
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * This method is used to prepare the query string for the addDataToTable method.
      * @param int $argslen The length of the array of column names.
@@ -50,37 +74,46 @@ class Model
      * @throws Exception If the number of arguments is less than 1 or the mode is not "columns" or "values".
      * @throws Exception If the mode is "columns" and the number of arguments is less than 1.
      */
-    private function prepareQueryStringFromArgs($argslen, $strarry, $mode): string
+    private function prepareQueryStringFromArgs(array $args, string $mode): string
     {
-
-        if ($argslen < 1) {
+        if (count($args) < 1) {
             throw new Exception("The number of arguments must be greater than 0.");
         }
         if ($mode != "columns" && $mode != "values") {
             throw new Exception("The mode must be either 'columns' or 'values'.");
         }
         try {
-            if ($mode == "columns") {
-                $res = "";
-                for ($i = 0; $i < $argslen; $i++) {
-                    $res .= $strarry[$i] . ", ";
+            $res = "";
+            foreach ($args as $arg) {
+                if ($mode == "columns") {
+                    $res .= $arg . ", ";
+                } else if ($mode == "values") {
+                    $res .= ":" . $arg . ", ";
                 }
-                $res = substr($res, 0, -2);
-                return $res;
             }
-            if ($mode == "values") {
-                $res = "";
-                for ($i = 0; $i < $argslen; $i++) {
-                    $res .= ":" . $strarry[$i] . ", ";
-                }
-                $res = substr($res, 0, -2);
-                return $res;
-            }
+            $res = substr($res, 0, -2);
+            return $res;
         } catch (Exception $error) {
-            $msg = $error->getMessage();
-            throw new Exception("Query string preparation failed: $msg");
+            throw new Exception("Query string preparation failed: " . $error->getMessage());
         }
-        return "";
+    }
+
+    /**
+     * This method is used to create a table in the database.
+     * @param array $columns
+     * @param array $types
+     * @return void
+     */
+    public function createTable(array $columns, array $types): void
+    {
+        $this->checkConnection();
+        $query = "CREATE TABLE IF NOT EXISTS `{$this->table}` (";
+        for ($i = 0; $i < count($columns); $i++) {
+            $query .= "`{$columns[$i]}` {$types[$i]},";
+        }
+        $query .= "PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
     }
 
     /**
@@ -90,15 +123,20 @@ class Model
      * @return bool True if the data exists, false if it does not.
      * @throws PDOException If the query fails to execute.
      */
-    public function checkDataExistence($column, $hasData): bool
+    public function checkDataExistence(string $column, string $hasData): bool
     {
         try {
+            $this->checkConnection();
+            if (!$this->checkColumnExists($column)){
+                throw new Exception("The column $column does not exist in the table $this->table.");
+            }
             $stm = $this->db->prepare("SELECT EXISTS (SELECT * FROM $this->table 
                                                     WHERE :column = :hasData)");
             $stm->bindParam(':column', $column);
             $stm->bindParam(':hasData', $hasData);
-            $res = $stm->execute();
-            return ($res == 1 ? true : false);
+            $stm->execute();
+            $res = $stm->fetch();
+            return ($res[0] == 1 ? true : false);
         } catch (PDOException $error) {
             $msg = $error->getMessage();
             throw new Exception("Checking if data exists in database failed: $msg");
@@ -113,23 +151,23 @@ class Model
      * @return PDOStatement The PDOStatement object.
      * @throws PDOException The PDOException object if the query fails.
      */
-    public function addDataToTable($args = []): PDOStatement
+    public function addDataToTable(array $args = []): PDOStatement
     {
+        extract($args);
+        $columns = $this->prepareQueryStringFromArgs($dbtables, "columns");
+        $values = $this->prepareQueryStringFromArgs($dbtables, "values");
+        $sql_query = "INSERT INTO $this->table ($columns) VALUES ($values)";
+        $stm = $this->db->prepare($sql_query);
+        for ($i = 0; $i < count($dbvars); $i++) {
+            $stm->bindParam(":$dbtables[$i]", $dbvars[$i]);
+        }
         try {
-            extract($args);
-            $columns = $this->prepareQueryStringFromArgs(count($dbtables), $dbtables, "columns");
-            $values = $this->prepareQueryStringFromArgs(count($dbtables), $dbtables, "values");
-            $sql_query = "INSERT INTO $this->table ($columns) VALUES ($values)";
-            $stm = $this->db->prepare($sql_query);
-            for ($i = 0; $i < count($dbvars); $i++) {
-                $stm->bindParam(":$dbtables[$i]", $dbvars[$i]);
-            }
             $stm->execute();
-            return $stm;
-        } catch (PDOException $error) {
+        } catch (PDOException $e) {
             $msg = $error->getMessage();
             throw new Exception("Adding data to database failed: $msg");
         }
+        return $stm;
     }
 
     /**
@@ -158,19 +196,30 @@ class Model
      * @return array Returns an array of the data.
      * @throws PDOException If the query fails to execute.
      */
-    public function getDataFromTable($column, $data): array
+    public function getDataFromTable(string $column, string $data): array
     {
-        try {
-            $stm = $this->db->prepare("SELECT * FROM $this->table WHERE $column = :hasData");
-            // $stm->bindParam(':column', $column);
-            $stm->bindParam(':hasData', $data);
-            $stm->execute();
-            $data = $stm->fetchAll(PDO::FETCH_ASSOC);
-            return $data;
-        } catch (PDOException $error) {
-            $msg = $error->getMessage();
-            throw new Exception("Fetching data from database failed: $msg");
+        if (empty($column) || empty($data)) {
+            return [];
         }
+    
+        $stm = $this->db->prepare("SELECT * FROM $this->table WHERE $column = :hasData");
+        if ($stm === false) {
+            throw new Exception('Could not prepare statement.');
+        }
+    
+        $result = $stm->execute([
+            ':hasData' => $data,
+        ]);
+        if ($result === false) {
+            throw new Exception('Could not execute statement.');
+        }
+    
+        $rows = $stm->fetchAll(PDO::FETCH_ASSOC);
+        if ($rows === false) {
+            throw new Exception('Could not fetch rows.');
+        }
+    
+        return $rows;
     }
 
     /**
@@ -180,18 +229,16 @@ class Model
      * @return PDOStatement Returns a PDOStatement object.
      * @throws PDOException If the query fails to execute.
      */
-    public function deleteDataFromTable($column, $data): PDOStatement
+    public function deleteDataFromTable(string $column, string $data): PDOStatement
     {
-        try {
-            $stm = $this->db->prepare("DELETE FROM $this->table WHERE :column = :hasData");
-            $stm->bindParam(':column', $column);
-            $stm->bindParam(':hasData', $data);
-            $stm->execute();
+        $stm = $this->db->prepare("DELETE FROM $this->table WHERE :column = :hasData");
+        $stm->bindParam(':column', $column);
+        $stm->bindParam(':hasData', $data);
+        $stm->execute();
+        if ($stm->rowCount() > 0) {
             return $stm;
-        } catch (PDOException $error) {
-            $msg = $error->getMessage();
-            throw new Exception("Deleting data from database failed: $msg");
         }
+        throw new Exception("Delete failed");
     }
 
     /**
@@ -202,18 +249,20 @@ class Model
      * @return PDOStatement Returns a PDOStatement object.
      * @throws PDOException If the query fails to execute.
      */
-    public function updateDataFromTable($column, $data, $newData): PDOStatement
+    public function updateDataFromTable(string $column, string $data, string $newData): PDOStatement
     {
-        try {
-            $stm = $this->db->prepare("UPDATE $this->table SET :column = :newData WHERE :column = :hasData");
-            $stm->bindParam(':column', $column);
-            $stm->bindParam(':hasData', $data);
-            $stm->bindParam(':newData', $newData);
-            $stm->execute();
-            return $stm;
-        } catch (PDOException $error) {
-            $msg = $error->getMessage();
-            throw new Exception("Updating data in database failed: $msg");
+        $sql = "UPDATE $this->table SET :column = :newData WHERE :column = :hasData";
+        $stm = $this->db->prepare($sql);
+        if ($stm === false) {
+            throw new \Exception('Could not prepare statement');
         }
+        $stm->bindParam(':column', $column);
+        $stm->bindParam(':hasData', $data);
+        $stm->bindParam(':newData', $newData);
+        $success = $stm->execute();
+        if ($success === false) {
+            throw new \Exception('Could not execute statement');
+        }
+        return $stm;
     }
 }
