@@ -15,7 +15,11 @@
     <header>
         <form action="" method="post"></form>
     </header>
+<<<<<<< HEAD
     home
+=======
+    Home
+>>>>>>> 051ff37ec38b47129f3527be5fb58ff86032bb4b
     <script src="" async defer></script>
 </body>
 
