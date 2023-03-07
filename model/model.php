@@ -124,7 +124,7 @@ class Model
     }
 
     /**
-     * This method is used to add users to the users table.
+     * This method is used to add data to the users table.
      * @param array $args An array of ["dbtables" => $dbtables, "dbvars" => $dbvars].
      * @param array $dbtables An array of the column names.
      * @param array $dbvars An array of the values to be inserted into the columns.
@@ -220,12 +220,11 @@ class Model
      */
     public function updateDataFromTable(string $column, string $data, string $newData): PDOStatement
     {
-        $sql = "UPDATE $this->table SET :column = :newData WHERE :column = :hasData";
+        $sql = "UPDATE $this->table SET $column = :newData WHERE $column = :hasData";
         $stm = $this->db->prepare($sql);
         if ($stm === false) {
             throw new \Exception('Could not prepare statement');
         }
-        $stm->bindParam(':column', $column);
         $stm->bindParam(':hasData', $data);
         $stm->bindParam(':newData', $newData);
         $success = $stm->execute();
