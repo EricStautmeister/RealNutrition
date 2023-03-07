@@ -1,7 +1,7 @@
 <?php
 
 require_once "./controller/controller.dashboard.php";
-// require_once "./model/user.model.php";
+require_once "./model/auth.model.php";
 
 class AuthController
 {
@@ -11,7 +11,7 @@ class AuthController
 
     public function __construct()
     {
-        // $this->model = new UserModel();
+        $this->model = new AuthModelWrapper();
         $this->name = "name";
         $this->pwd = "pwd";
     }
@@ -26,7 +26,6 @@ class AuthController
 
     private function displayPage($args = [])
     {
-        // sets php variables and displays auth page
         extract($args);
         $type = $_SERVER["REQUEST_URI"];
         include "form.testing.php";
@@ -43,13 +42,13 @@ class AuthController
         if ($_SERVER["REQUEST_URI"] == "/login") {
             $isloggedin = $this->login();
             if (!empty($isloggedin)) {
-                $this->displayPage(["res" => $isloggedin]);
+                $this->displayPage(["err" => $isloggedin]);
                 return;
             }
         } else if ($_SERVER["REQUEST_URI"] == "/signup") {
             $issignedup = $this->signup();
             if (!empty($issignedup)) {
-                $this->displayPage(["res" => $issignedup]);
+                $this->displayPage(["err" => $issignedup]);
                 return;
             }
         }
@@ -67,26 +66,25 @@ class AuthController
 
     private function login()
     {
-        // $this->model->validateUser($_POST[$this->name], $_POST[$this->pwd])
-        if ($this->name == "name") {
+        $loginres = $this->model->validateUser($_POST[$this->name], $_POST[$this->pwd]);
+        if (is_bool($loginres)) {
             $e = new DashboardController();
             $e->loginUser($_POST[$this->name]);
             header("Location: /dashboard");
         } else {
-            return;
+            return $loginres;
         }
     }
 
     private function signup()
     {
-        // $this->model->isUser($_POST[$this->name])
-        if ($this->pwd == "heya") {
+        $existinguser = $this->model->checkUserExistence($_POST[$this->name]);
+        if ($existinguser) {
             return "User already exists";
         } else {
-            // $setuser = $this->model->setUser($_POST["name"], $_POST["pwd"]);
-            $setuser = "set";
-            if ($setuser != "set") {
-                return $setuser;
+            $setuser = $this->model->addUser($_POST["name"], $_POST["pwd"]);
+            if (!$setuser) {
+                return "Could not create User";
             } else {
                 $this->login();
             }
