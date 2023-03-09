@@ -119,6 +119,7 @@ class ModelFactory
     }
 
     public function select(string $column, string $data): array
+    //TODO: Add limits and offsets
     {
         $this->checkConnection();
         $this->execute();
