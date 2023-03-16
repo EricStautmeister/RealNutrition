@@ -16,7 +16,6 @@ class ModelFactory
     private $table;
     private $queries = array();
     private $ValueIncrementer = 0;
-    private $selectQueryRes = array();
 
     function __construct($table)
     {
@@ -49,10 +48,20 @@ class ModelFactory
         return false;
     }
 
-    // public static function getInstance($table)
-    // {
-    //     return new ModelFactory($table);
-    // }
+    public function checkDataExistence(string $column, string $hasData): ModelFactory
+    {
+        $this->checkConnection();
+        $query = "SELECT EXISTS (SELECT * FROM $this->table WHERE $column = :hasData)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':hasData', $hasData);
+        $stmt->execute();
+        $res = $stmt->fetch();
+        if (($res[0] == 1 ? true : false)) {
+            return $this;
+        } else {
+            throw new Exception("No data exists in the table.");
+        }
+    }
 
     private function prepareQueryStringFromArgs(Query $query, array $args, string $mode, array $vals): string
     {
@@ -66,16 +75,18 @@ class ModelFactory
             $res = "";
             for ($i = 0; $i < count($args); $i++) {
                 $uuid = "_" . $this->table . "_" . $this->ValueIncrementer;
+                $valuePlaceholder = ":" . $args[$i] . $uuid;
                 if ($mode == "columns") {
                     $res .= $args[$i] . ", ";
                 } else if ($mode == "values") {
-                    $res_str = ":" . $args[$i] . $uuid . ", ";
+                    $res_str = $valuePlaceholder . ", ";
                     $res .= $res_str;
                     array_push($query->bindParams, array(substr($res_str, 0, -2), $vals[$i]));
                     $this->ValueIncrementer++;
                 }
             }
             $res = substr($res, 0, -2);
+            // echo "res: " . $res . nl2br("\n\n");
             return $res;
         } catch (Exception $error) {
             throw new Exception("Query string preparation failed: " . $error->getMessage());
@@ -106,6 +117,7 @@ class ModelFactory
 
     public function insert(array $columns, array $values): ModelFactory
     {
+        // echo "cols: " . print_r($columns, true) . nl2br("\nvals: ") . print_r($values, true) . nl2br("\n\n");
         $this->checkConnection();
         $query = new Query;
         $query->string = "INSERT INTO `{$this->table}` (";
@@ -114,6 +126,7 @@ class ModelFactory
         $query->string .= ") VALUES (";
         $query->string .= $this->prepareQueryStringFromArgs($query, $columns, "values", $values);
         $query->string .= ");";
+        // echo "query: " . $query->string . nl2br("\n") . print_r($query->bindParams, true) . nl2br("\n\n");
         array_push($this->queries, $query);
         return $this;
     }
@@ -187,7 +200,6 @@ class ModelFactory
     }
 
     public function execute(): ModelFactory
-    //TODO: Implement Transactions
     {
 
         $connected = $this->checkConnection();
@@ -198,9 +210,12 @@ class ModelFactory
 
             foreach ($this->queries as $query) {
                 $stmt = $this->db->prepare($query->string);
+                // echo nl2br("\n" . $query->string . PHP_EOL);
                 foreach ($query->bindParams as $bps) {
+                    // echo nl2br($bps[0] . " -->binds--> " . $bps[1] . PHP_EOL);
                     $stmt->bindParam($bps[0], $bps[1]);
                 }
+                $this->printQueries();
                 $stmt->execute();
             }
             $this->db->commit();
