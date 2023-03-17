@@ -23,13 +23,16 @@
 
     <form action="<?php $type ?>" method="post">
 
-        Input: <input type="email" name="name" value="<?php $name ?>"> <?php if ($res == "Name required") {
-                                                                            echo $res;
-                                                                        } ?>
+        Input: <input type="email" name="name" value="<?php $name ?>">
 
-        Pass: <input type="password" name="pwd"> <?php if ($res == "Password required") {
-                                                        echo $res;
-                                                    } ?>
+        Pass: <input type="password" name="pwd">
+
+        <div style='margin:15px'>
+            <img src="./controller/captcha.php">
+        </div> <input type="text" name="captcha">
+        <?php if (isset($res)) {
+            echo $res;
+        } ?>
 
         <input type="submit" name="submit" value="text_submit">
 

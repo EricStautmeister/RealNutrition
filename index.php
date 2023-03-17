@@ -8,12 +8,22 @@ require_once './model/model.php';
 require_once "./controller/controller.home.php";
 require_once "./controller/controller.auth.php";
 require_once "./controller/controller.dashboard.php";
+require_once "./controller/controller.email.php";
+
+
+require "./vendor/phpmailer/phpmailer/src/PHPMailer.php";
+require "./vendor/phpmailer/phpmailer/src/SMTP.php";
+require "./vendor/phpmailer/phpmailer/src/Exception.php";
+
+
+require_once "./controller/controller.dashboard.php";
+require_once "./model/auth.model.php";
 
 try {
 
     // sets a switch for the different routes
     // and assigns the correct controller
-    $request = $_SERVER["REQUEST_URI"];
+    $request = $_SERVER["PATH_INFO"];
     switch ($request) {
         case "/dashboard":
             $controller = new DashboardController();
@@ -24,6 +34,9 @@ try {
         case "/signup":
             $controller = new AuthController();
             break;
+        case "/email":
+            $controller = new EmailController();
+            break;
         case "/":
             $controller = new HomeController();
             break;
@@ -33,8 +46,11 @@ try {
         default:
             echo "This page does not exist!";
             echo "<a href='/'>Go back Home</a>";
+            var_dump($_SERVER);
+            phpinfo();
             break;
     }
+
 
     // controller now handles request and displays page base on route
     if (isset($controller)) {
