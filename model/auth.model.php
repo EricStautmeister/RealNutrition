@@ -17,6 +17,8 @@ interface TempAuthInterface {
 
 interface AuthInterface {
     public function checkUserExistence(string $email): ModelFactory;
+    public function newUserToVerify(string $email, string $password, string $token): ModelFactory;
+    public function verifyNewUser(string $email, string $token): AuthModelWrapper;
     public function addUser(string $email, string $password, string $uid): ModelFactory;
     public function getUser(string $email);
     public function deleteUser(string $email): ModelFactory;
