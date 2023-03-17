@@ -205,7 +205,7 @@ class AuthModelWrapper extends ModelFactory implements AuthInterface {
             return $this;
         } catch (PDOException $error) {
             $msg = $error->getMessage();
-            throw new Exception("Validating user credentials failed: " . $msg);
+            throw new Exception("Validating user credentials failed.");
         }
     }
 }
