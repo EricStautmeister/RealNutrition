@@ -92,8 +92,6 @@ class TempAuthTable extends ModelFactory implements TempAuthInterface {
     }
 }
 
-// TODO: Rewrite this class to use the new model class.
-
 class AuthModelWrapper extends ModelFactory implements AuthInterface {
     private $TempAuthTable;
     public function __construct() {
