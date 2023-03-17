@@ -7,9 +7,7 @@ has a few methods that allow you to query the database. */
  * @package Model
  * @version 1.0.0
  */
-class Model
-
-{
+class Model {
     private $db;
     private $table;
 
@@ -19,8 +17,7 @@ class Model
      * @return void
      * @throws PDOException on failure to connect to the database.
      */
-    function __construct($table)
-    {
+    function __construct($table) {
         $this->table = $table;
         try {
             $dsn = "{$_ENV['DRIVER']}:dbname={$_ENV['DATABASE']};
@@ -41,8 +38,7 @@ class Model
         }
     }
 
-    function checkConnection()
-    {
+    function checkConnection() {
         if ($this->db) {
             return true;
         } else {
@@ -59,8 +55,7 @@ class Model
      * @throws Exception If the number of arguments is less than 1 or the mode is not "columns" or "values".
      * @throws Exception If the mode is "columns" and the number of arguments is less than 1.
      */
-    private function prepareQueryStringFromArgs(array $args, string $mode): string
-    {
+    private function prepareQueryStringFromArgs(array $args, string $mode): string {
         if (count($args) < 1) {
             throw new Exception("The number of arguments must be greater than 0.");
         }
@@ -89,8 +84,7 @@ class Model
      * @param array $types
      * @return void
      */
-    public function createTable(array $columns, array $types): void
-    {
+    public function createTable(array $columns, array $types): void {
         $this->checkConnection();
         $query = "CREATE TABLE IF NOT EXISTS `{$this->table}` (";
         for ($i = 0; $i < count($columns); $i++) {
@@ -108,8 +102,7 @@ class Model
      * @return bool True if the data exists, false if it does not.
      * @throws PDOException If the query fails to execute.
      */
-    public function checkDataExistence(string $column, string $hasData): bool
-    {
+    public function checkDataExistence(string $column, string $hasData): bool {
         try {
             $stm = $this->db->prepare("SELECT EXISTS (SELECT * FROM $this->table 
                                                     WHERE $column = :hasData)");
@@ -131,8 +124,7 @@ class Model
      * @return PDOStatement The PDOStatement object.
      * @throws PDOException The PDOException object if the query fails.
      */
-    public function addDataToTable(array $args = []): PDOStatement
-    {
+    public function addDataToTable(array $args = []): PDOStatement {
         extract($args);
         $columns = $this->prepareQueryStringFromArgs($dbtables, "columns");
         $values = $this->prepareQueryStringFromArgs($dbtables, "values");
@@ -156,8 +148,7 @@ class Model
      * @return PDOException If the query fails to execute.
      */
 
-    public function getAllDataFromTable(): array
-    {
+    public function getAllDataFromTable(): array {
         try {
             $stm = $this->db->prepare("SELECT * FROM $this->table");
             $stm->execute();
@@ -176,8 +167,7 @@ class Model
      * @return array Returns an array of the data.
      * @throws PDOException If the query fails to execute.
      */
-    public function getDataFromTable(string $column, string $data): array
-    {
+    public function getDataFromTable(string $column, string $data): array {
         try {
             $stm = $this->db->prepare("SELECT * FROM $this->table WHERE $column = :hasData");
             // $stm->bindParam(':column', $column);
@@ -198,8 +188,7 @@ class Model
      * @return PDOStatement Returns a PDOStatement object.
      * @throws PDOException If the query fails to execute.
      */
-    public function deleteDataFromTable(string $column, string $data): PDOStatement
-    {
+    public function deleteDataFromTable(string $column, string $data): PDOStatement {
         $stm = $this->db->prepare("DELETE FROM $this->table WHERE :column = :hasData");
         $stm->bindParam(':column', $column);
         $stm->bindParam(':hasData', $data);
@@ -218,8 +207,7 @@ class Model
      * @return PDOStatement Returns a PDOStatement object.
      * @throws PDOException If the query fails to execute.
      */
-    public function updateDataFromTable(string $column, string $data, string $newData): PDOStatement
-    {
+    public function updateDataFromTable(string $column, string $data, string $newData): PDOStatement {
         $sql = "UPDATE $this->table SET $column = :newData WHERE $column = :hasData";
         $stm = $this->db->prepare($sql);
         if ($stm === false) {
