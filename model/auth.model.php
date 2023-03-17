@@ -1,80 +1,168 @@
 <?php
 require_once "model.php";
 
-/**
- * This class is the model for the user table.
- * It extends the model class and uses the methods from the model class.
- * It also has its own methods that are specific to the user table.
- * The following methods are available:
- * - validateUser() - validates a users inputed data against the database.
- *                    It makes use of the following methods:
- *                    - checkUserExistence()
- *                    - getUser()
- * - checkUserExistence() - checks if a user exists in the database.
- * - addUser() - adds a user to the database.
- * - getUser() - gets a user from the database.
- * - deleteUser() - deletes a user from the database.
- * - updateUser() [incomplete] - updates a users data in the database.
- * @package model
- * @subpackage auth.model
- * @version 1.0.0
- */
-class AuthModelWrapper extends Model
-{
-    /**
-     * This method is used to instantiate the UserModel class.
-     * It passed  the table name to the parent class, that it inherits from. 
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct("auth");
+interface TempAuthInterface {
+    public function checkUserExistence(string $email): ModelFactory;
+    public function addUser(string $email, string $password, string $token): ModelFactory;
+    public function getUser(string $email);
+    public function deleteUser(string $email): ModelFactory;
+    public function updateUser(
+        string $oldemail,
+        string $oldpassword,
+        string $newemail,
+        string $newpassword
+    ): ModelFactory;
+    public function validateUser(string $email, string $token): ModelFactory;
+}
+
+interface AuthInterface {
+    public function checkUserExistence(string $email): ModelFactory;
+    public function addUser(string $email, string $password, string $uid): ModelFactory;
+    public function getUser(string $email);
+    public function deleteUser(string $email): ModelFactory;
+    public function updateUser(
+        string $oldemail,
+        string $oldpassword,
+        string $newemail,
+        string $newpassword
+    ): ModelFactory;
+    public function validateUser(string $email, string $password): ModelFactory;
+}
+
+class TempAuthTable extends ModelFactory implements TempAuthInterface {
+    public function __construct() {
+        parent::__construct("temp_auth");
+        $this->createTable(
+            [
+                "id",
+                "email",
+                "password",
+                "token",
+                "created_at",
+                "updated_at"
+            ],
+            [
+                "INT(11) NOT NULL AUTO_INCREMENT",
+                "VARCHAR(255) NOT NULL",
+                "VARCHAR(255) NOT NULL",
+                "VARCHAR(255) NOT NULL",
+                "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP",
+                "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
+            ]
+        );
+    }
+    public function checkUserExistence(string $email): TempAuthTable {
+        return $this->checkDataExistence("email", $email);
+    }
+    public function addUser(string $email, string $password, string $token): TempAuthTable {
+        $this->insert(["email", "password", "token"], [$email, $password, $token])->execute();
+        return $this;
     }
 
-    /**
-     * This method is used to check if a user exists in the database.
-     * @param string $email The email of the user.
-     * @return bool True if the user exists, false if the user does not exist.
-     * @return PDOException on failure to connect to the database.
-     */
-    public function checkUserExistence(string $email): bool|string
-    {
-        try {
-            $exists = $this->checkDataExistence("email", $email);
+    public function getUser(string $email) {
+        $user = $this->select("email", $email)[0];
+        unset($user["id"]);
+        return $user;
+    }
 
-            return $exists;
+    public function deleteUser(string $email): TempAuthTable {
+        $this->delete("email", $email);
+        return $this;
+    }
+
+    public function updateUser(
+        string $oldemail,
+        string $oldpassword,
+        string $newemail,
+        string $newpassword
+    ): TempAuthTable {
+        $this->update("email", $oldemail, ["email", "password"], [$newemail, $newpassword]);
+        return $this;
+    }
+    public function validateUser(string $email, string $token): TempAuthTable {
+        $this->checkUserExistence($email);
+        $user = $this->getUser($email);
+        if ($user["token"] === $token) {
+            return $this;
+        } else {
+            throw new Exception("Invalid password or token.");
+        }
+    }
+}
+
+// TODO: Rewrite this class to use the new model class.
+
+class AuthModelWrapper extends ModelFactory implements AuthInterface {
+    private $TempAuthTable;
+    public function __construct() {
+        try {
+            $this->TempAuthTable = new TempAuthTable();
+            parent::__construct("auth");
+            $this->createTable(
+                [
+                    "id",
+                    "email",
+                    "password",
+                    "uid",
+                    "created_at",
+                    "updated_at"
+                ],
+
+                [
+                    "INT(11) NOT NULL AUTO_INCREMENT",
+                    "VARCHAR(255) NOT NULL",
+                    "VARCHAR(255) NOT NULL",
+                    "VARCHAR(255) NOT NULL",
+                    "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP",
+                    "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
+                ]
+            )->execute();
         } catch (PDOException $error) {
-            return $error->getMessage();
+            $msg = $error->getMessage();
+            throw new Exception("Creating Auth failed: " . $msg);
         }
     }
 
-    /**
-     * This method is used to add a user to the database.
-     * @param string $email The email of the user.
-     * @param string $password The password of the user.
-     * @return bool True if the user was added, false if the user was not added.
-     */
-    public function addUser(string $email, string $password): bool
-    {
+    public function checkUserExistence(string $email): AuthModelWrapper {
         try {
-            $dbtables = ["email", "password"];
-            $dbvars = [$email, $password];
-            $this->addDataToTable(["dbtables" => $dbtables, "dbvars" => $dbvars]);
-            return true;
+
+            return $this->checkDataExistence("email", $email);
         } catch (PDOException $error) {
-            return false;
+            $msg = $error->getMessage();
+            throw new Exception("Checking existence of user failed: " . $msg);
         }
     }
 
-    /**
-     * This method is used to get a user from the database.
-     * @param string $email The email of the user.
-     * @return array The user data.
-     */
-    public function getUser(string $email)
-    {
+    public function newUserToVerify(string $email, string $password, string $token): AuthModelWrapper {
+        $this->TempAuthTable->addUser($email, $password, $token);
+        return $this;
+    }
+
+    public function verifyNewUser(string $email, string $token): AuthModelWrapper {
         try {
-            $user = $this->getDataFromTable("email", $email);
+            $user = $this->TempAuthTable->getUser($email);
+            $this->TempAuthTable->validateUser($email, $token)
+                ->deleteUser($email)->execute();
+            $this->addUser($email, $user["password"], uniqid())->execute();
+        } catch (Exception $error) {
+            throw new Exception("Verifying User failed: " . $error->getMessage());
+        }
+        return $this;
+    }
+
+    public function addUser(string $email, string $password, string $uid): AuthModelWrapper {
+        try {
+            $this->insert(["email", "password", "uid"], [$email, $password, $uid])->execute();
+            return $this;
+        } catch (PDOException $error) {
+            $msg = $error->getMessage();
+            throw new Exception("Adding user failed: " . $msg);
+        }
+    }
+
+    public function getUser(string $email) {
+        try {
+            $user = $this->select("email", $email);
             unset($user["id"]);
             return $user;
         } catch (PDOException $error) {
@@ -83,61 +171,39 @@ class AuthModelWrapper extends Model
         }
     }
 
-    /**
-     * This method is used to delete a user from the database.
-     * @param string $email The email of the user.
-     * @return bool True if the user was deleted, false if the user was not deleted.
-     */
-    public function deleteUser(string $email)
-    {
+    public function deleteUser(string $email): AuthModelWrapper {
         try {
-            $this->deleteDataFromTable("email", $email);
-            return true;
+            $this->delete("email", $email)
+                ->execute();
+            return $this;
         } catch (PDOException $error) {
-            return false;
+            $msg = $error->getMessage();
+            throw new Exception("Deleting user failed: " . $msg);
+        }
+    }
+    public function updateUser(
+        string $oldemail,
+        string $oldpassword,
+        string $newemail,
+        string $newpassword
+    ): AuthModelWrapper {
+        try {
+            $this->update("email", $oldemail, ["email", "password"], [$newemail, $newpassword])->execute();
+            return $this;
+        } catch (PDOException $error) {
+            $msg = $error->getMessage();
+            throw new Exception("Updating user failed: " . $msg);
         }
     }
 
-    /**
-     * This method is used to update a users data in the database. 
-     * @param string $email The email of the user 
-     * @param string $password The hashed password of the user. 
-     * @return bool True if the user was updated, false if the user was not updated.
-     */
-    public function updateUser(string $email, string $password): bool
-    {
+    public function validateUser(string $email, string $password): AuthModelWrapper {
         try {
-            $updatedUser = $this->updateDataFromTable("email", $email, "password", $password);
-            if (!$updatedUser) {
-                throw new PDOException("There was an error updating the user.");
-            }
-            return $updatedUser;
+            if (!$this->checkUserExistence($email)) throw new Exception("User does not exist or was passed incorrectly.");
+            if ($password != $this->getUser($email)[0]["password"]) throw new Exception("Password is incorrect.");
+            return $this;
         } catch (PDOException $error) {
-            return false;
+            $msg = $error->getMessage();
+            throw new Exception("Validating user credentials failed: " . $msg);
         }
-    }
-
-    /**
-     * This method is used to validate a users inputed data against the database. 
-     * @param string $email The users email
-     * @param string $password The hashed password of the user
-     * @return bool True if the users data matches the data in the database, else false. 
-     */
-    public function validateUser(string $email, string $password): bool|string
-    {
-        //TODO: Different error messages for information security.
-        try {
-            $emailexists = $this->checkUserExistence($email);
-        } catch (PDOException $error) {
-            return $error->getMessage();
-        }
-        if (!$emailexists) {
-            return "Email does not exist.";
-        }
-        $user = $this->getUser($email);
-        if ($password != $user[0]["password"]) {
-            return "Password is incorrect.";
-        }
-        return true;
     }
 }
