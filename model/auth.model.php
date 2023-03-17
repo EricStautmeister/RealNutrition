@@ -12,7 +12,7 @@ interface TempAuthInterface {
         string $newemail,
         string $newpassword
     ): ModelFactory;
-    public function validateUser(string $email, string $password, string $token): ModelFactory;
+    public function validateUser(string $email, string $token): ModelFactory;
 }
 
 interface AuthInterface {
@@ -79,10 +79,10 @@ class TempAuthTable extends ModelFactory implements TempAuthInterface {
         $this->update("email", $oldemail, ["email", "password"], [$newemail, $newpassword]);
         return $this;
     }
-    public function validateUser(string $email, string $password, string $token): TempAuthTable {
+    public function validateUser(string $email, string $token): TempAuthTable {
         $this->checkUserExistence($email);
         $user = $this->getUser($email);
-        if ($user["password"] === $password && $user["token"] === $token) {
+        if ($user["token"] === $token) {
             return $this;
         } else {
             throw new Exception("Invalid password or token.");
@@ -138,11 +138,12 @@ class AuthModelWrapper extends ModelFactory implements AuthInterface {
         return $this;
     }
 
-    public function verifyNewUser(string $email, string $password, string $token): AuthModelWrapper {
+    public function verifyNewUser(string $email, string $token): AuthModelWrapper {
         try {
-            $this->TempAuthTable->validateUser($email, $password, $token)
+            $user = $this->TempAuthTable->getUser($email);
+            $this->TempAuthTable->validateUser($email, $token)
                 ->deleteUser($email)->execute();
-            $this->addUser($email, $password, uniqid())->execute();
+            $this->addUser($email, $user["password"], uniqid())->execute();
         } catch (Exception $error) {
             throw new Exception("Verifying User failed: " . $error->getMessage());
         }
