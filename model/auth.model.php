@@ -2,7 +2,7 @@
 require_once "model.php";
 
 interface TempAuthInterface {
-    public function checkUserExistence(string $email): ModelFactory;
+    public function checkUserExistence(string $email): bool;
     public function addUser(string $email, string $password, string $token): ModelFactory;
     public function getUser(string $email);
     public function deleteUser(string $email): ModelFactory;
@@ -16,7 +16,7 @@ interface TempAuthInterface {
 }
 
 interface AuthInterface {
-    public function checkUserExistence(string $email): ModelFactory;
+    public function checkUserExistence(string $email): bool;
     public function newUserToVerify(string $email, string $password, string $token): ModelFactory;
     public function verifyNewUser(string $email, string $token): AuthModelWrapper;
     public function addUser(string $email, string $password, string $uid): ModelFactory;
@@ -53,7 +53,7 @@ class TempAuthTable extends ModelFactory implements TempAuthInterface {
             ]
         );
     }
-    public function checkUserExistence(string $email): TempAuthTable {
+    public function checkUserExistence(string $email): bool {
         return $this->checkDataExistence("email", $email);
     }
     public function addUser(string $email, string $password, string $token): TempAuthTable {
@@ -125,7 +125,7 @@ class AuthModelWrapper extends ModelFactory implements AuthInterface {
         }
     }
 
-    public function checkUserExistence(string $email): AuthModelWrapper {
+    public function checkUserExistence(string $email): bool {
         try {
 
             return $this->checkDataExistence("email", $email);
@@ -200,8 +200,8 @@ class AuthModelWrapper extends ModelFactory implements AuthInterface {
 
     public function validateUser(string $email, string $password): AuthModelWrapper {
         try {
-            if (!$this->checkUserExistence($email)) throw new Exception("User does not exist or was passed incorrectly.");
-            if ($password != $this->getUser($email)[0]["password"]) throw new Exception("Password is incorrect.");
+            if (!$this->checkUserExistence($email)) throw new Exception("User does not exist or password was passed incorrectly.");
+            if ($password != $this->getUser($email)[0]["password"]) throw new Exception("User does not exist or password was passed incorrectly.");
             return $this;
         } catch (PDOException $error) {
             $msg = $error->getMessage();
