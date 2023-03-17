@@ -1,7 +1,6 @@
 <?php
 
-class Query
-{
+class Query {
     public $string = "";
     public $bindParams = array();
 }
@@ -10,15 +9,13 @@ class Query
 /**
  * Summary of ModelFactory
  */
-class ModelFactory
-{
+class ModelFactory {
     private $db;
     private $table;
     private $queries = array();
     private $ValueIncrementer = 0;
 
-    function __construct($table)
-    {
+    function __construct($table) {
         $this->table = $table;
         try {
             $dsn = "{$_ENV['DRIVER']}:dbname={$_ENV['DATABASE']};
@@ -40,16 +37,14 @@ class ModelFactory
     }
 
     //UTILITY METHODS
-    function checkConnection(): bool
-    {
+    function checkConnection(): bool {
         if ($this->db) {
             return true;
         }
         return false;
     }
 
-    public function checkDataExistence(string $column, string $hasData): ModelFactory
-    {
+    public function checkDataExistence(string $column, string $hasData): ModelFactory {
         $this->checkConnection();
         $query = "SELECT EXISTS (SELECT * FROM $this->table WHERE $column = :hasData)";
         $stmt = $this->db->prepare($query);
@@ -63,8 +58,7 @@ class ModelFactory
         }
     }
 
-    private function prepareQueryStringFromArgs(Query $query, array $args, string $mode, array $vals): string
-    {
+    private function prepareQueryStringFromArgs(Query $query, array $args, string $mode, array $vals): string {
         if (count($args) < 1) {
             throw new Exception("The number of arguments must be greater than 0.");
         }
@@ -94,8 +88,7 @@ class ModelFactory
     }
 
     //QUERY METHODS
-    public function createTable(array $columns, array $types): ModelFactory
-    {
+    public function createTable(array $columns, array $types): ModelFactory {
         $this->checkConnection();
         $query = "CREATE TABLE IF NOT EXISTS `{$this->table}` (";
         for ($i = 0; $i < count($columns); $i++) {
@@ -107,16 +100,14 @@ class ModelFactory
     }
 
 
-    public function dropTable(): ModelFactory
-    {
+    public function dropTable(): ModelFactory {
         //This method is special because it is the only one that executes the query immediately.
         $this->checkConnection();
         $this->db->exec("DROP TABLE IF EXISTS `{$this->table}`;");
         return $this;
     }
 
-    public function insert(array $columns, array $values): ModelFactory
-    {
+    public function insert(array $columns, array $values): ModelFactory {
         // echo "cols: " . print_r($columns, true) . nl2br("\nvals: ") . print_r($values, true) . nl2br("\n\n");
         $this->checkConnection();
         $query = new Query;
@@ -144,8 +135,7 @@ class ModelFactory
         return $res;
     }
 
-    public function selectAll(): array
-    {
+    public function selectAll(): array {
         $this->checkConnection();
         $this->execute();
         $query = "SELECT * FROM `{$this->table}`;";
@@ -155,8 +145,7 @@ class ModelFactory
         return $res;
     }
 
-    public function update(string $controlColumn, string $controlData, array $columns, array $values): ModelFactory
-    {
+    public function update(string $controlColumn, string $controlData, array $columns, array $values): ModelFactory {
         $this->checkConnection();
         $query = new Query;
         $query->string = "UPDATE `{$this->table}` SET ";
@@ -174,8 +163,7 @@ class ModelFactory
         return $this;
     }
 
-    public function delete(string $column, string $data): ModelFactory
-    {
+    public function delete(string $column, string $data): ModelFactory {
         $this->checkConnection();
         $query = new Query;
         $query->string = "DELETE FROM `{$this->table}` 
@@ -187,8 +175,7 @@ class ModelFactory
         return $this;
     }
 
-    public function printQueries(): ModelFactory
-    {
+    public function printQueries(): ModelFactory {
         foreach ($this->queries as $query) {
             echo nl2br($query->string . PHP_EOL);
             foreach ($query->bindParams as $bps) {
@@ -199,8 +186,7 @@ class ModelFactory
         return $this;
     }
 
-    public function execute(): ModelFactory
-    {
+    public function execute(): ModelFactory {
 
         $connected = $this->checkConnection();
         $transactionStarted = $this->db->beginTransaction();
@@ -223,11 +209,12 @@ class ModelFactory
             $this->db->rollBack();
             throw new Exception("Execution failed: " . $error->getMessage());
         }
+        $this->queries = array();
+        $this->ValueIncrementer = 0;
         return $this;
     }
 
-    function __destruct()
-    {
+    function __destruct() {
         $this->db = null;
     }
 }
