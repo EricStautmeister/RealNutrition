@@ -44,18 +44,15 @@ class ModelFactory {
         return false;
     }
 
-    public function checkDataExistence(string $column, string $hasData): ModelFactory {
+    public function checkDataExistence(string $column, string $hasData): bool {
         $this->checkConnection();
         $query = "SELECT EXISTS (SELECT * FROM $this->table WHERE $column = :hasData)";
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':hasData', $hasData);
         $stmt->execute();
         $res = $stmt->fetch();
-        if (($res[0] == 1 ? true : false)) {
-            return $this;
-        } else {
-            throw new Exception("No data exists in the table.");
-        }
+
+        return ($res[0] == 1 ? true : false);
     }
 
     private function prepareQueryStringFromArgs(Query $query, array $args, string $mode, array $vals): string {
