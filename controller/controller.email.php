@@ -49,7 +49,7 @@ class EmailController {
         
         <body>
             <p>Click this Button to Authenticate your Email</p>
-            <a href='http://localhost:8000/email?mail=$email&token=$token'>Authenticate</a>
+            <a href='http://localhost:8000/email?email=$email&token=$token'>Authenticate</a>
             <p>If you did not sign up to RealNutrition please ignore this email</p>
         </body>
         
