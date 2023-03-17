@@ -1,13 +1,19 @@
 <?php
 
+/**
+ * This class represents a query object.
+ * It contains the query string and the bind parameters.
+ */
 class Query {
     public $string = "";
     public $bindParams = array();
 }
 
-
 /**
- * Summary of ModelFactory
+ * This class is a factory for creating models.
+ * It contains methods for creating tables, inserting data, getting data, updating data, and deleting data.
+ * 
+ * @param string $table The name of the table to be created.
  */
 class ModelFactory {
     private $db;
@@ -105,7 +111,6 @@ class ModelFactory {
     }
 
     public function insert(array $columns, array $values): ModelFactory {
-        // echo "cols: " . print_r($columns, true) . nl2br("\nvals: ") . print_r($values, true) . nl2br("\n\n");
         $this->checkConnection();
         $query = new Query;
         $query->string = "INSERT INTO `{$this->table}` (";
@@ -114,7 +119,6 @@ class ModelFactory {
         $query->string .= ") VALUES (";
         $query->string .= $this->prepareQueryStringFromArgs($query, $columns, "values", $values);
         $query->string .= ");";
-        // echo "query: " . $query->string . nl2br("\n") . print_r($query->bindParams, true) . nl2br("\n\n");
         array_push($this->queries, $query);
         return $this;
     }
