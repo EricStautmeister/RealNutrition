@@ -9,16 +9,77 @@ class Query {
     public $bindParams = array();
 }
 
+interface ModelFactoryInterface {
+    public function createTable(array $columns, array $types): ModelFactoryInterface;
+    public function dropTable(): ModelFactoryInterface;
+    public function checkConnection(): bool;
+    public function checkDataExistence(string $column, string $hasData): bool;
+    public function insert(array $columns, array $values): ModelFactoryInterface;
+    public function select(string $column, string $data): array;
+    public function selectAll(): array;
+    public function update(string $controlColumn, string $controlData, array $columns, array $values): ModelFactoryInterface;
+    public function delete(string $column, string $data): ModelFactoryInterface;
+    public function execute(): ModelFactoryInterface;
+}
+
 /**
  * This class is a factory for creating models.
  * It contains methods for creating tables, inserting data, getting data, updating data, and deleting data.
  * 
+ * To use this class, create a new instance of it and pass the name of the table to be created.
+ * You can then chain the methods to create queries, and by ending the chain with an execute() you execute the queries
+ * in the most efficient way by making use of SQL Transactions.
+ * 
+ * Example:
+ * $model = new ModelFactory("table_name");
+ * $model->createTable(TABLE_NAME)
+ *      ->insertData(MOCK_DATA)
+ *     ->execute()
+ * 
+ * The above example creates a table named "table_name" and inserts mock data into it.
+ * 
+ * The methods implemented in this class are:
+ *  1. createTable(): Creates a table with the specified name.
+ *  2. dropTable(): Drops the table with the specified name.
+ *  3. checkConnection(): Checks if the database connection is established.
+ *  4. checkDataExistence(): Checks if the data exists in the table.
+ *  5. insert(): Inserts data into the table.
+ *  6. 1. select(): Selects specific data from the table.
+ *  6. 2. selectAll(): Selects all data from the table.
+ *  7. update(): Updates data in the table.
+ *  8. delete(): Deletes data from the table.
+ *  9. execute(): Executes the queries.
+ * 
+ * @implements ModelFactoryInterface
+ * 
  * @param string $table The name of the table to be created.
  */
-class ModelFactory {
+class ModelFactory implements ModelFactoryInterface {
+
+    /**
+     * The database connection.
+     * @var PDO
+     * @access private
+     */
     private $db;
+
+    /**
+     * The name of the table to be created.
+     * @var string
+     * @access private
+     */
     private $table;
+    /**
+     * The queries to be executed.
+     * @var array of Query objects
+     * @access private
+     */
     private $queries = array();
+    /**
+     * An execution incrementer to differentiate between bind parameters.
+     * @var int 
+     * @access private
+     */
     private $ValueIncrementer = 0;
 
     function __construct($table) {
@@ -42,7 +103,12 @@ class ModelFactory {
         }
     }
 
-    //UTILITY METHODS
+    /******************** UTILITY METHODS ********************************/
+
+    /**
+     * This method checks if the database connection is established.
+     * @return bool Returns true if the database connection is established, false otherwise.
+     */
     function checkConnection(): bool {
         if ($this->db) {
             return true;
@@ -50,6 +116,10 @@ class ModelFactory {
         return false;
     }
 
+    /**
+     * This method checks if specific data in a table exists.
+     * @return bool Returns true if the data exists, false otherwise.
+     */
     public function checkDataExistence(string $column, string $hasData): bool {
         $this->checkConnection();
         $query = "SELECT EXISTS (SELECT * FROM $this->table WHERE $column = :hasData)";
@@ -57,17 +127,22 @@ class ModelFactory {
         $stmt->bindParam(':hasData', $hasData);
         $stmt->execute();
         $res = $stmt->fetch();
-
         return ($res[0] == 1 ? true : false);
     }
 
+    /**
+     * This method prepares the query string from the arguments.
+     * @param Query $query The query object.
+     * @param array $args The arguments to be used in the query string.
+     * @param string $mode The mode of the query string. It can be either "columns" or "values".
+     * @param array $vals The values to be used in the query string.
+     * 
+     * @return string Returns the prepared query string.
+     */
     private function prepareQueryStringFromArgs(Query $query, array $args, string $mode, array $vals): string {
-        if (count($args) < 1) {
-            throw new Exception("The number of arguments must be greater than 0.");
-        }
-        if ($mode != "columns" && $mode != "values") {
-            throw new Exception("The mode must be either 'columns' or 'values'.");
-        }
+        if (count($args) < 1) throw new Exception("The number of arguments must be greater than 0.");
+        // if (count($args) != count($vals)) throw new Exception("The number of arguments must be equal to the number of values.");
+        if ($mode != "columns" && $mode != "values") throw new Exception("The mode must be either 'columns' or 'values'.");
         try {
             $res = "";
             for ($i = 0; $i < count($args); $i++) {
@@ -82,16 +157,24 @@ class ModelFactory {
                     $this->ValueIncrementer++;
                 }
             }
-            $res = substr($res, 0, -2);
-            // echo "res: " . $res . nl2br("\n\n");
-            return $res;
+            return substr($res, 0, -2);
         } catch (Exception $error) {
             throw new Exception("Query string preparation failed: " . $error->getMessage());
         }
     }
 
-    //QUERY METHODS
+    /************************************** QUERY METHODS ****************************************/
+    
+    /**
+     * This method creates a table.
+     * @param array $columns The columns to be created.
+     * @param array $types The types of the columns to be created.
+     * 
+     * @return ModelFactory Returns the ModelFactory object.
+     * @throws Exception Throws an exception if the number of columns and types are not equal.
+     */
     public function createTable(array $columns, array $types): ModelFactory {
+        if (count($columns) != count($types)) throw new Exception("The number of columns and types must be equal.");
         $this->checkConnection();
         $query = "CREATE TABLE IF NOT EXISTS `{$this->table}` (";
         for ($i = 0; $i < count($columns); $i++) {
@@ -103,6 +186,10 @@ class ModelFactory {
     }
 
 
+    /**
+     * This method drops a table.
+     * @return ModelFactory Returns the ModelFactory object.
+     */
     public function dropTable(): ModelFactory {
         //This method is special because it is the only one that executes the query immediately.
         $this->checkConnection();
@@ -110,6 +197,13 @@ class ModelFactory {
         return $this;
     }
 
+    /**
+     * This method inserts data into a table.
+     * @param string $column The column to be used in the INSERT INTO clause.
+     * @param string $data The data to be used in the INSERT INTO clause.
+     * 
+     * @return ModelFactory Returns the ModelFactory object.
+     */
     public function insert(array $columns, array $values): ModelFactory {
         $this->checkConnection();
         $query = new Query;
@@ -123,6 +217,11 @@ class ModelFactory {
         return $this;
     }
 
+    /**
+     * This method returns specific data from a table.
+     * @param string $column The column to be used in the SELECT clause.
+     * @param string $data The data to be used in the SELECT clause.
+     */
     public function select(string $column, string $data): array
     //TODO: Add limits and offsets
     {
@@ -136,6 +235,11 @@ class ModelFactory {
         return $res;
     }
 
+    /**
+     * This method returns all data from a table.
+     * @return array Returns an array of associative arrays.
+     * @throws Exception Throws an exception if the query fails.
+     */
     public function selectAll(): array {
         $this->checkConnection();
         $this->execute();
@@ -145,7 +249,13 @@ class ModelFactory {
         $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
-
+    /**
+     * This method updates data in a table.
+     * @param string $column The column to be used in the UPDATE clause.
+     * @param string $data The data to be used in the UPDATE clause.
+     * 
+     * @return ModelFactory Returns the ModelFactory object.
+     */
     public function update(string $controlColumn, string $controlData, array $columns, array $values): ModelFactory {
         $this->checkConnection();
         $query = new Query;
@@ -164,6 +274,13 @@ class ModelFactory {
         return $this;
     }
 
+    /**
+     * This method deletes data from a table.
+     * @param string $column The column to be used in the DELETE FROM clause.
+     * @param string $data The data to be used in the DELETE FROM clause.
+     * 
+     * @return ModelFactory Returns the ModelFactory object.
+     */
     public function delete(string $column, string $data): ModelFactory {
         $this->checkConnection();
         $query = new Query;
@@ -176,6 +293,10 @@ class ModelFactory {
         return $this;
     }
 
+    /**
+     * This method executes all queries in the queries array.
+     * @return ModelFactory Returns the ModelFactory object.
+     */
     public function printQueries(): ModelFactory {
         foreach ($this->queries as $query) {
             echo nl2br($query->string . PHP_EOL);
@@ -187,6 +308,10 @@ class ModelFactory {
         return $this;
     }
 
+    /**
+     * This method executes all queries in the queries array.
+     * @return ModelFactory Returns the ModelFactory object.
+     */
     public function execute(): ModelFactory {
 
         $connected = $this->checkConnection();
