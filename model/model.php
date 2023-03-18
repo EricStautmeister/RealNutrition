@@ -9,6 +9,19 @@ class Query {
     public $bindParams = array();
 }
 
+interface ModelFactoryInterface {
+    public function createTable(array $columns, array $types): ModelFactoryInterface;
+    public function dropTable(): ModelFactoryInterface;
+    public function checkConnection(): bool;
+    public function checkDataExistence(string $column, string $hasData): bool;
+    public function insert(array $columns, array $values): ModelFactoryInterface;
+    public function select(string $column, string $data): array;
+    public function selectAll(): array;
+    public function update(string $controlColumn, string $controlData, array $columns, array $values): ModelFactoryInterface;
+    public function delete(string $column, string $data): ModelFactoryInterface;
+    public function execute(): ModelFactoryInterface;
+}
+
 /**
  * This class is a factory for creating models.
  * It contains methods for creating tables, inserting data, getting data, updating data, and deleting data.
@@ -39,7 +52,7 @@ class Query {
  * 
  * @param string $table The name of the table to be created.
  */
-class ModelFactory {
+class ModelFactory implements ModelFactoryInterface {
 
     /**
      * The database connection.
