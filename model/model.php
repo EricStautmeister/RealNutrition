@@ -50,6 +50,8 @@ interface ModelFactoryInterface {
  *  8. delete(): Deletes data from the table.
  *  9. execute(): Executes the queries.
  * 
+ * @implements ModelFactoryInterface
+ * 
  * @param string $table The name of the table to be created.
  */
 class ModelFactory implements ModelFactoryInterface {
