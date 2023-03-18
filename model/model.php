@@ -17,6 +17,26 @@ class Query {
  * You can then chain the methods to create queries, and by ending the chain with an execute() you execute the queries
  * in the most efficient way by making use of SQL Transactions.
  * 
+ * Example:
+ * $model = new ModelFactory("table_name");
+ * $model->createTable(TABLE_NAME)
+ *      ->insertData(MOCK_DATA)
+ *     ->execute()
+ * 
+ * The above example creates a table named "table_name" and inserts mock data into it.
+ * 
+ * The methods implemented in this class are:
+ *  1. createTable(): Creates a table with the specified name.
+ *  2. dropTable(): Drops the table with the specified name.
+ *  3. checkConnection(): Checks if the database connection is established.
+ *  4. checkDataExistence(): Checks if the data exists in the table.
+ *  5. insert(): Inserts data into the table.
+ *  6. 1. select(): Selects specific data from the table.
+ *  6. 2. selectAll(): Selects all data from the table.
+ *  7. update(): Updates data in the table.
+ *  8. delete(): Deletes data from the table.
+ *  9. execute(): Executes the queries.
+ * 
  * @param string $table The name of the table to be created.
  */
 class ModelFactory {
