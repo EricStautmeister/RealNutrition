@@ -18,6 +18,7 @@ require "./vendor/phpmailer/phpmailer/src/Exception.php";
 
 require_once "./controller/controller.dashboard.php";
 require_once "./model/auth.model.php";
+require_once "./model/food.model.php";
 
 try {
 
