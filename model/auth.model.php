@@ -338,7 +338,7 @@ class AuthModelWrapper extends ModelFactory implements AuthInterface {
     public function validateUser(string $email, string $password): AuthModelWrapper {
         try {
             if (!$this->checkUserExistence($email)) throw new Exception("User does not exist or password was passed incorrectly.");
-            if ($password != $this->getUser($email)[0]["password"]) throw new Exception("User does not exist or password was passed incorrectly.");
+            if (!password_verify($password, $this->getUser($email)[0]["password"])) throw new Exception("User does not exist or password was passed incorrectly.");
             return $this;
         } catch (PDOException $error) {
             throw new Exception("Validating user credentials failed.");
