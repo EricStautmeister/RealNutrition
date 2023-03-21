@@ -12,25 +12,25 @@
 </head>
 
 <body>
-        <main id="main">
+    <main id="main">
         <h1 id="login">Sign In</h1>
         <div id="LoginError">
-            <p id="LoginErrorMsg"><span>Incorrect E-Mail and/or Password.</span>Try again or click Forgot Password to reset it  </p>
+            <p id="LoginErrorMsg"><span>Incorrect E-Mail and/or Password.</span>Try again or click Forgot Password to reset it </p>
         </div>
         <form id="login">
-        <input type="text" name="Email" id="EmailField" class="login form" placeholder="Enter E-Mail">
-        <input type="password" name="password" id="PasswordField" class="login form" placeholder="Enter Password">
-        <div class="item">
-            <input type="checkbox" id=Remember name="RememberMe" value="Forgor"> 
-            <label for="RememberMe">Remember Me><br> 
-        </div>
-        <div class="item"> 
-            <a href="PlaceholderURL">Forgot Password?</a>
-        </div>
-        <input type="submit" value="LoginInfo" id="SubmitForm" class="login form">
-        </form> 
+            <input type="text" name="Email" id="EmailField" class="login form" placeholder="Enter E-Mail">
+            <input type="password" name="password" id="PasswordField" class="login form" placeholder="Enter Password">
+            <div class="item">
+                <input type="checkbox" id=Remember name="RememberMe" value="Forgor">
+                <label for="RememberMe">Remember Me><br>
+            </div>
+            <div class="item">
+                <a href="PlaceholderURL">Forgot Password?</a>
+            </div>
+            <input type="submit" value="LoginInfo" id="SubmitForm" class="login form">
+        </form>
         <p2 id="Transfer">Do not have an account yet? <span> Create Account</span></p1>
-    <script src="" async defer></script>
+            <script src="" async defer></script>
     </main>
 </body>
 

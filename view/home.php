@@ -25,11 +25,11 @@
             <li><a href="Placeholder">Dashboard</a></li>
             <li><a href="Placeholder1">Homepage</a></li>
             <li><a href="Placeholder2">Guide(?)</a></li>
-        </ul>     
+        </ul>
     </nav>
     <section class="Intro">
         <h1 id="RTard">
-            Food Search Engine 
+            Food Search Engine
         </h1>
         <p1 id="explaintext">
             Search different Foods to see their different nutritional values
@@ -46,8 +46,8 @@
     <footer>
         <p id="FooterText">
             Kantonsschule Büelrain
-            RosenStrasse 1 
-            8400 Winterthur 
+            RosenStrasse 1
+            8400 Winterthur
             Copyright ©-All rights are reserved
         </p>
     </footer>
