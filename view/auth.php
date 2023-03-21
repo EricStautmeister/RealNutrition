@@ -12,10 +12,10 @@
 </head>
 
 <body>
-    <main id="main">
+        <main id="main">
         <h1 id="login">Sign In</h1>
         <div id="LoginError">
-            <p id="LoginErrorMsg"><span>Incorrect E-Mail and/or Password</span> </p>
+            <p id="LoginErrorMsg"><span>Incorrect E-Mail and/or Password.</span>Try again or click Forgot Password to reset it  </p>
         </div>
         <form id="login">
         <input type="text" name="Email" id="EmailField" class="login form" placeholder="Enter E-Mail">

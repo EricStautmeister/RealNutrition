@@ -25,6 +25,8 @@ USERNAME=...
 PASSWORD=...
 DATABASE=...
 MYSQL_ATTR_SSL_CA=...
+EMAIL=...
+EMAIL_PASSWORD=...
 ```
 
 ### Installations: <br>
@@ -80,6 +82,16 @@ Copy the path to the folder (`C:\php`).
     - Click on `New`, and enter the path to the `php` folder, and press `ok`, then press `ok` again, and then press `apply` or `ok`.
 
 Now PHP should be installed on your mashine, test it out by opening a terminal window (`Win + R` and `cmd`), and typing out `php -v`. If no errors occur, php is installed. 
+
+### Modify PHP's permissions
+Search in your php folder (`C:\php`) for the `php.ini_development` file. Rename it to `php.ini`, and open it in VSCode.
+Now hit `ctrl + f` and search for `extension`, and enable all of the following extensions, by deleting the leading semicolon:
+    - curl
+    - gd
+    - mbstring
+    - openssl
+    - pdo_mysql
+
 
 #### On linux:
 Enter the following commands one at a time. 

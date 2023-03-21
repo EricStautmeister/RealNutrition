@@ -18,7 +18,7 @@
     <header>
         <form action="" method="post"></form>
     </header>
-    Home page   
+    Home
     <script src="" async defer></script>
     <nav class="navbar">
         <ul class="list">
