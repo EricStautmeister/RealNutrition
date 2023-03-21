@@ -33,7 +33,7 @@ class AuthController {
 
         if ($_SERVER["PATH_INFO"] == "/login") {
             try {
-                $this->authModel->validateUser($_POST[$this->name], password_hash($_POST[$this->pwd], PASSWORD_DEFAULT));
+                $this->authModel->validateUser($_POST[$this->name], $_POST[$this->pwd]);
                 AuthController::loginDashboard($_POST[$this->name]);
             } catch (Exception $error) {
                 $this->displayAuthPage(["err" => $error, "email" => $_POST[$this->name]]);
