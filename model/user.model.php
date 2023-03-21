@@ -3,7 +3,8 @@ require_once "model.php";
 require_once "food.model.php";
 
 // TODO: Rewrite this class to use the new model class.
-// TODO: Add all necessary CRUD methods.
+// TODO: Add a method to delete and modify a user's data.
+
 class UserModelWrapper extends ModelFactory {
     private $uid;
     private $FoodTable;
