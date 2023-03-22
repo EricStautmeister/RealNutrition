@@ -1,10 +1,10 @@
 <?php
 
 class HomeController {
-    private $model;
+    private $foodModel;
 
     public function __construct() {
-        $this->model = new FoodModelWrapper();
+        $this->foodModel = new FoodModelWrapper();
     }
     public function handleRequest() {
         if (empty($_POST)) {
@@ -16,11 +16,12 @@ class HomeController {
 
     private function displayPage($args = []) {
         extract($args);
-        $foods = $this->model->getFoodNames();
+        $foods = $this->foodModel->getFoodNames();
         include "./view/home.php";
     }
 
     private function handlePost() {
-        $this->displayPage($_POST);
+        $food = $this->foodModel->getFoodData($_POST["food"]);
+        $this->displayPage(["data" => $food]);
     }
 }

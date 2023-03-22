@@ -79,6 +79,13 @@
 
 .function-preview {
     margin-top: 5rem;
+    opacity: 0;
+}
+
+#email-signup {
+    color: blue;
+    text-decoration: underline;
+    margin-top: 10px;
 }
 
 .preview {
