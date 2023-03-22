@@ -2,13 +2,9 @@
 
 class AuthController {
     private $authModel;
-    private $name;
-    private $pwd;
 
     public function __construct() {
         $this->authModel = new AuthModelWrapper();
-        $this->name = "email";
-        $this->pwd = "password";
     }
     public function handleRequest() {
         if (empty($_POST)) {
@@ -28,10 +24,10 @@ class AuthController {
         $isclear = $this->checkRequirements();
         switch ($isclear) {
             case "Captcha incorrect":
-                $this->displayAuthPage(["err" => $isclear, "email" => $_POST[$this->name], "password" => $_POST[$this->pwd]]);
+                $this->displayAuthPage(["err" => $isclear, "email" => $_POST["email"], "password" => $_POST["password"]]);
                 return;
             case "Password required":
-                $this->displayAuthPage(["err" => $isclear, "email" => $_POST[$this->name]]);
+                $this->displayAuthPage(["err" => $isclear, "email" => $_POST["email"]]);
                 return;
             case "Name required":
                 $this->displayAuthPage(["err" => $isclear]);
@@ -40,23 +36,23 @@ class AuthController {
 
         if ($_SERVER["PATH_INFO"] == "/login") {
             try {
-                $this->authModel->validateUser($_POST[$this->name], $_POST[$this->pwd]);
-                AuthController::loginDashboard($_POST[$this->name]);
+                $this->authModel->validateUser($_POST["email"], $_POST["password"]);
+                AuthController::loginDashboard($_POST["email"]);
             } catch (Exception $error) {
-                $this->displayAuthPage(["err" => $error, "email" => $_POST[$this->name]]);
+                $this->displayAuthPage(["err" => $error, "email" => $_POST["email"]]);
                 return;
             }
         } else if ($_SERVER["PATH_INFO"] == "/signup") {
-            if (!$this->checkUserExistence($_POST[$this->name])) {
+            if (!$this->checkUserExistence($_POST["email"])) {
                 try {
                     $token = substr(md5(random_bytes(64)), 10, 22);
-                    $this->authModel->newUserToVerify($_POST[$this->name], password_hash($_POST[$this->pwd], PASSWORD_DEFAULT), $token);
+                    $this->authModel->newUserToVerify($_POST["email"], password_hash($_POST["password"], PASSWORD_DEFAULT), $token);
                 } catch (Exception $error) {
-                    $this->displayAuthPage(["err" => $error, "email" => $_POST[$this->name], "pwd" => $_POST[$this->pwd]]);
+                    $this->displayAuthPage(["err" => $error, "email" => $_POST["email"], "password" => $_POST["password"]]);
                     return;
                 }
-                EmailController::sendMail($_POST[$this->name], $token);
-                EmailController::displayEmailPage($_POST[$this->name]);
+                EmailController::sendMail($_POST["email"], $token);
+                EmailController::displayEmailPage($_POST["email"]);
             }
         }
     }
@@ -64,9 +60,9 @@ class AuthController {
         session_start();
         if ($_POST["captcha"] != $_SESSION["captcha"]) {
             return "Captcha incorrect";
-        } else if (empty($_POST[$this->name])) {
+        } else if (empty($_POST["email"])) {
             return "Name required";
-        } else if (empty($_POST[$this->pwd])) {
+        } else if (empty($_POST["password"])) {
             return "Password required";
         } else {
             return "clear";
