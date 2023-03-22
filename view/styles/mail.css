@@ -1,0 +1,28 @@
+#container {
+    width: 100vw;
+    height: 100vh;
+    background: #0003;
+}
+
+#text {
+    margin-left: 45%;
+    margin-top: 25%;
+}
+
+span {
+    text-decoration: underline;
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+a {
+    text-decoration: underline;
+    color: blue;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: blue;
+}

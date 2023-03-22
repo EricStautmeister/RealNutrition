@@ -11,47 +11,21 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="view/styles/index.css">
+    <link rel="stylesheet" href="view/styles/mail.css">
     <link rel="stylesheet" href="view/styles/normalise.css">
+
 </head>
 
 <body>
-    <header>
-        <form action="" method="post"></form>
-    </header>
-    Home
-    <script src="" async defer></script>
-    <nav class="navbar">
-        <ul class="list">
-            <li><a href="Placeholder">Dashboard</a></li>
-            <li><a href="Placeholder1">Homepage</a></li>
-            <li><a href="Placeholder2">Guide(?)</a></li>
-        </ul>
-    </nav>
-    <section class="Intro">
-        <h1 id="RTard">
-            Food Search Engine
-        </h1>
-        <p1 id="explaintext">
-            Search different Foods to see their different nutritional values
-        </p1>
+    <div id="container">
+        <div id="text">
+            <p>An e-mail has been sent to <span><?php echo $email; ?></span></p>
+            <p>Please verify your email or
+                <a href="/signup">Sign Up again</a>
+            </p>
 
-    </section>
-    <div class="FoodSearchThing">
-        <input type="text" name="FoodSearch" id="FoodSearch" placeholder="Butter">
-        <button class="ClickThingSearch">
-            Search
-        </button>
-
+        </div>
     </div>
-    <footer>
-        <p id="FooterText">
-            Kantonsschule Büelrain
-            RosenStrasse 1
-            8400 Winterthur
-            Copyright ©-All rights are reserved
-        </p>
-    </footer>
-
 </body>
 
 </html>
