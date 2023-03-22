@@ -43,7 +43,7 @@ class AuthController {
                 $this->authModel->validateUser($_POST["email"], $_POST["password"]);
                 $this->loginDashboard($_POST["email"]);
             } catch (Exception $error) {
-                $this->displayAuthPage(["err" => $error, "email" => $_POST["email"]]);
+                $this->displayAuthPage(["err" => $error->getMessage(), "email" => $_POST["email"]]);
                 return;
             }
         } else if ($_SERVER["PATH_INFO"] == "/signup") {
@@ -52,7 +52,7 @@ class AuthController {
                     $token = substr(md5(random_bytes(64)), 10, 22);
                     $this->authModel->newUserToVerify($_POST["email"], password_hash($_POST["password"], PASSWORD_DEFAULT), $token);
                 } catch (Exception $error) {
-                    $this->displayAuthPage(["err" => $error, "email" => $_POST["email"], "password" => $_POST["password"]]);
+                    $this->displayAuthPage(["err" => $error->getMessage(), "email" => $_POST["email"], "password" => $_POST["password"]]);
                     return;
                 }
                 EmailController::sendMail($_POST["email"], $token);
