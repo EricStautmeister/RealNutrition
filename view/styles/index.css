@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Work Sans');
+
 body {
 	margin: 0;
 	padding: 0;
@@ -9,6 +11,7 @@ body {
     flex-direction: column;
     justify-content: center;
     position: absolute;
+    background: linear-gradient(#0003, #d7d2cc);
 }
 
 body::before {
@@ -28,4 +31,13 @@ body::before {
 a, a:hover, a:focus, a:active {
     text-decoration: none;
     color: inherit;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: #b0b0b0;
+    font-size: x-small;
 }

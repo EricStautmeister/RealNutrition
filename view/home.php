@@ -32,15 +32,34 @@
 
     <div class="content">
         <div class="function-preview">
-            <button>
-                Text
-            </button>
-            <button>
-                Text2
-            </button>
-            <button>
-                Text3
-            </button>
+            <input list="food-selection" class="input" placeholder="Select a food"/>
+            <datalist name="food" id="food-selection" class="selection food-selection">
+                <?php
+                for ($i = 0; $i < count($foods); $i++) {
+                    echo "<option class='food-option-" . $i . "' value='" . $foods[$i] . "' />";
+                }
+                ?>
+            </datalist>
+
+            <input list="meal-selection" class="input" placeholder="Select a meal"/>
+            <datalist name="meal" id="meal-selection" class="selection meal-selection">
+                <?php
+                $meals = array("breakfast", "lunch", "dinner", "snack");
+                for ($i = 0; $i < count($meals); $i++) {
+                    echo "<option class='food-option-" . $i . "' value='" . $meals[$i] . "' />";
+                }
+                ?>
+            </datalist>
+
+            <input list="amount-selection" class="input" placeholder="Select amount"/>
+            <datalist name="amount" id="amount-selection" class="selection amount-selection">
+                <?php
+                $amounts = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+                for ($i = 0; $i < count($amounts); $i++) {
+                    echo "<option class='food-option-" . $i . "' value='" . $amounts[$i] . "' />";
+                }
+                ?>
+            </datalist>
         </div>
         <div class="content-section">
             <h2>What is Real Nutrition?</h2>
@@ -57,12 +76,10 @@
     </div>
 
     <footer>
-        <p id="FooterText">
-            Kantonsschule Büelrain
-            RosenStrasse 1
-            8400 Winterthur
-            Copyright ©-All rights are reserved
-        </p>
+        Kantonsschule Büelrain
+        RosenStrasse 1
+        8400 Winterthur
+        Copyright ©-All rights are reserved
     </footer>
 
 </body>
