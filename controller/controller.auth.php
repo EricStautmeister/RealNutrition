@@ -7,8 +7,8 @@ class AuthController {
 
     public function __construct() {
         $this->authModel = new AuthModelWrapper();
-        $this->name = "name";
-        $this->pwd = "pwd";
+        $this->name = "email";
+        $this->pwd = "password";
     }
     public function handleRequest() {
         if (empty($_POST)) {
@@ -21,14 +21,21 @@ class AuthController {
     private function displayAuthPage($args = []) {
         extract($args);
         $type = $_SERVER["PATH_INFO"];
-        include "form.testing.php";
+        include "./view/auth.php";
     }
 
     private function handlePost() {
         $isclear = $this->checkRequirements();
-        if ($isclear != "clear") {
-            $this->displayAuthPage(["res" => $isclear]);
-            return;
+        switch ($isclear) {
+            case "Captcha incorrect":
+                $this->displayAuthPage(["err" => $isclear, "email" => $_POST[$this->name], "password" => $_POST[$this->pwd]]);
+                return;
+            case "Password required":
+                $this->displayAuthPage(["err" => $isclear, "email" => $_POST[$this->name]]);
+                return;
+            case "Name required":
+                $this->displayAuthPage(["err" => $isclear]);
+                return;
         }
 
         if ($_SERVER["PATH_INFO"] == "/login") {

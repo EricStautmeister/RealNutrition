@@ -1,3 +1,7 @@
+<?php if (empty($type)) {
+    header("Location: /login");
+} ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -7,31 +11,39 @@
     <title>Real Nutrition</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./styles/index.css">
-    <link rel="stylesheet" href="./styles/normalise.css">
+    <link rel="stylesheet" href="./view/styles/index.css">
+    <link rel="stylesheet" href="./view/styles/normalise.css">
+    <link rel="stylesheet" href="./view/styles/auth.css">
+
 </head>
 
 <body>
-    <main id="main">
-        <h1 id="login">Sign In</h1>
-        <div id="LoginError">
-            <p id="LoginErrorMsg"><span>Incorrect E-Mail and/or Password.</span>Try again or click Forgot Password to reset it </p>
-        </div>
-        <form id="login">
-            <input type="text" name="Email" id="EmailField" class="login form" placeholder="Enter E-Mail">
-            <input type="password" name="password" id="PasswordField" class="login form" placeholder="Enter Password">
-            <div class="item">
-                <input type="checkbox" id=Remember name="RememberMe" value="Forgor">
-                <label for="RememberMe">Remember Me><br>
+    <div id="wrapper">
+        <p id="title"><?php echo ucfirst(substr($type, 1)) ?></p>
+        <form action="<?php echo $type ?>" method="post">
+            <p class="label">Email</p> <input type="email" name="email" value="<?php if (isset($email)) {
+                                                                                    echo $email;
+                                                                                } ?>">
+            <p class="label">Password</p> <input type="password" name="password" value="<?php if (isset($password)) {
+                                                                                            echo $password;
+                                                                                        } ?>">
+            <div id="captcha_wrapper">
+                <div class="captcha">
+                    <p>Captcha</p><input id="new" type="submit" value="New">
+                    <img id="captcha_img" src="./controller/captcha.php" alt="captcha">
+                </div>
+                <div class="captcha">
+                    <p>Enter Captcha</p><input type="text" name="captcha">
+                </div>
             </div>
-            <div class="item">
-                <a href="PlaceholderURL">Forgot Password?</a>
-            </div>
-            <input type="submit" value="LoginInfo" id="SubmitForm" class="login form">
+            <input id="submit" type="submit" value="<?php echo ucfirst(substr($type, 1)) ?>">
         </form>
-        <p2 id="Transfer">Do not have an account yet? <span> Create Account</span></p1>
-            <script src="" async defer></script>
-    </main>
+        <?php if ($type == "/login") {
+            echo "<p>No account? <a href='/signup'>Sign Up</a></p>";
+        } else {
+            echo "<p>Have an account? <a href='/login'>Login</a></p>";
+        } ?>
+    </div>
 </body>
 
 </html>
