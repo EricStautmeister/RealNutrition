@@ -59,16 +59,16 @@ class ModelFactory implements ModelFactoryInterface {
     /**
      * The database connection.
      * @var PDO
-     * @access private
+     * @access public
      */
-    private $db;
+    public $db;
 
     /**
      * The name of the table to be created.
      * @var string
-     * @access private
+     * @access public
      */
-    private $table;
+    public $table;
     /**
      * The queries to be executed.
      * @var array of Query objects
@@ -164,7 +164,7 @@ class ModelFactory implements ModelFactoryInterface {
     }
 
     /************************************** QUERY METHODS ****************************************/
-    
+
     /**
      * This method creates a table.
      * @param array $columns The columns to be created.
@@ -274,6 +274,79 @@ class ModelFactory implements ModelFactoryInterface {
         return $this;
     }
 
+    public function updateAll(array $columns, array $values): ModelFactory {
+        $this->checkConnection();
+        $query = new Query;
+        $query->string = "UPDATE `{$this->table}` SET ";
+        for ($i = 0; $i < count($columns); $i++) {
+            $query->string .= "`{$columns[$i]}` = :{$columns[$i]}_{$this->table}_{$this->ValueIncrementer}, ";
+            array_push($query->bindParams, array(":{$columns[$i]}_{$this->table}_{$this->ValueIncrementer}", $values[$i]));
+            $this->ValueIncrementer++;
+        }
+        $query->string = substr($query->string, 0, -2);
+        $query->string .= ";";
+
+        array_push($this->queries, $query);
+        $this->ValueIncrementer++;
+        return $this;
+    }
+
+    public function pushToJSONArrayInJSONObject(
+        string $column,
+        string $controlQuery,
+        array $jsonKeys,
+        array $jsonValues,
+        string $objectPath = ""
+    ): ModelFactory {
+
+        $this->checkConnection();
+        $query = new Query;
+        $query->string =
+            "UPDATE `{$this->table}` 
+            SET `{$column}` = JSON_ARRAY_APPEND(`{$column}`, '$.{$objectPath}', 
+            JSON_OBJECT(";
+
+        for ($i = 0; $i < count($jsonKeys); $i++) {
+            if ($jsonValues[$i]["type"] == "normal") {
+                $query->string .= ":keys_{$this->table}_{$this->ValueIncrementer}, ";
+                $query->string .= ":values_{$this->table}_{$this->ValueIncrementer}, ";
+
+                array_push(
+                    $query->bindParams,
+                    array(":keys_{$this->table}_{$this->ValueIncrementer}", $jsonKeys[$i])
+                );
+                array_push(
+                    $query->bindParams,
+                    array(":values_{$this->table}_{$this->ValueIncrementer}", $jsonValues[$i])
+                );
+            }
+            if ($jsonValues[$i]["type"] == "json") {
+                $query->string .= ":keys_{$this->table}_{$this->ValueIncrementer}, ";
+                $query->string .= " (";
+
+                array_push(
+                    $query->bindParams,
+                    array(":keys_{$this->table}_{$this->ValueIncrementer}", $jsonKeys[$i])
+                );
+
+                for ($j = 0; $j < count($jsonValues[$i]["values"]); $j++) {
+                    $query->string .= ":values_{$this->table}_{$this->ValueIncrementer}, ";
+                    array_push(
+                        $query->bindParams,
+                        array(":values_{$this->table}_{$this->ValueIncrementer}", $jsonValues[$i]["values"][$j])
+                    );
+                }
+            }
+        }
+        $query->string = substr($query->string, 0, -2);
+        $query->string .= ")";
+        $query->string .= ") WHERE {$controlQuery};";
+
+        array_push($this->queries, $query);
+        $this->ValueIncrementer++;
+        return $this;
+    }
+
     /**
      * This method deletes data from a table.
      * @param string $column The column to be used in the DELETE FROM clause.
@@ -315,6 +388,7 @@ class ModelFactory implements ModelFactoryInterface {
     public function execute(): ModelFactory {
 
         $connected = $this->checkConnection();
+        if (count($this->queries) == 0) return $this;
         $transactionStarted = $this->db->beginTransaction();
         try {
             if (!$connected) throw new Exception("Database connection failed.");
@@ -342,5 +416,9 @@ class ModelFactory implements ModelFactoryInterface {
 
     function __destruct() {
         $this->db = null;
+    }
+
+    function getDB() {
+        return $this->db;
     }
 }
