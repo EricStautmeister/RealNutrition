@@ -10,52 +10,69 @@
     </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="view/styles/index.css">
-    <link rel="stylesheet" href="view/styles/normalise.css">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/normalise.css">
 </head>
 
 <body>
 
     <?php
-    $userdata = [
-        [0] => [
-            "breakfast" => ["name" => "E", "calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3],
-            "lunch" => ["food" => "Ck", "calories" => 165, "protein" => 31, "carbs" => 0.1, "fat" => 3.6],
-            "dinner" => ["food" => "Salad", "calories" => 15, "protein" => 1.4, "carbs" => 2.4, "fat" => 0.4],
-            "snack" => ["food" => "Apple", "calories" => 52, "protein" => 0.3, "carbs" => 13.8, "fat" => 0.2]
-        ]
-    ];
+    $days = array(
+        array(
+            [
+                "breakfast" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
+                "lunch" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
+                "dinner" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
+                "snack" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]]
+            ],
+            "timestamp" => "2020-01-01"
+        ),
+        array(
+            [
+                "breakfast" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
+                "lunch" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
+                "dinner" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
+                "snack" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]]
+            ],
+            "timestamp" => "2020-01-01"
+        )
+    );
 
-    for ($i = 0; $i < count($userdata); $i++) {
-        $day = $userdata[$i];
+    for ($i = 0; $i < count($days); $i++) {
+        $day = $days[$i];
 
-        var_dump($day);
 
-        // echo "<div class='user-data'>";
-        // echo "<h2>Day " . ($i + 1) . "</h2>";
-        // echo "<table>";
-        // echo "<tr>";
-        // echo "<th>Meal</th>";
-        // echo "<th>Food</th>";
-        // echo "<th>Calories</th>";
-        // echo "<th>Protein</th>";
-        // echo "<th>Carbs</th>";
-        // echo "<th>Fat</th>";
-        // echo "</tr>";
-        // foreach ($day as $meal) {
-        //     foreach ($meal as $fooditem) {
-        //         echo "<tr>";
-        //         echo "<td>" . $meal . "</td>";
-        //         echo "<td>" . $data[0]["food"] . "</td>";
-        //         echo "<td>" . $data[0]["calories"] . "</td>";
-        //         echo "<td>" . $data[0]["protein"] . "</td>";
-        //         echo "<td>" . $data[0]["carbs"] . "</td>";
-        //         echo "<td>" . $data[0]["fat"] . "</td>";
-        //         echo "</tr>";
-        //     }
-        // }
-        // echo "</table>";
-        // echo "</div>";
+        echo "<div class='user-data'>";
+        echo "<h2>Day " . $day["timestamp"] . count($days) . "</h2>";
+        echo "<table>";
+        echo "<tr>";
+        echo "<th>Meal</th>";
+        echo "<th>Food</th>";
+        echo "<th>Calories</th>";
+        echo "<th>Protein</th>";
+        echo "<th>Carbs</th>";
+        echo "<th>Fat</th>";
+        echo "</tr>";
+
+        $mealObject = $day[0];
+        $meals = array_keys($mealObject);
+
+        for ($j = 0; $j < count($mealObject); $j++) {
+            $meal = $meals[$j];
+            $foodItem = $mealObject[$meal];
+
+            echo "<tr>";
+            echo "<td>" . $meal . "</td>";
+            echo "<td>" . $foodItem["name"] . "</td>";
+            echo "<td>" . $foodItem["meta"]["calories"] . "</td>";
+            echo "<td>" . $foodItem["meta"]["protein"] . "</td>";
+            echo "<td>" . $foodItem["meta"]["carbs"] . "</td>";
+            echo "<td>" . $foodItem["meta"]["fat"] . "</td>";
+            echo "</tr>";
+        }
+
+        echo "</table>";
+        echo "</div>";
     }
 
 
