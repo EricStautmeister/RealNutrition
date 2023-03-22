@@ -28,6 +28,14 @@ p {
     color: white;
 }
 
+#home {
+    position: absolute;
+    top: 30px;
+    right: 50px;
+    font-size: 30px;
+    color: blue;
+}
+
 form {
     display: flex;
     flex-direction: column;

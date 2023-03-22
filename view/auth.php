@@ -18,6 +18,7 @@
 </head>
 
 <body>
+    <a id="home" href="/">Home</a>
     <div id="content">
         <div id="wrapper">
             <p id="title"><?php echo ucfirst(substr($type, 1)) ?></p>

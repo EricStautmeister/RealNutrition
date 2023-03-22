@@ -47,7 +47,7 @@
                     ?>
                 </datalist>
 
-                <select name="meal" id="measure-selection" class="selection measure-selection input" placeholder="g">
+                <select name="meal" id="measure-selection" placeholder="unit">
                     <?php
                     $measures = array("g", "ml", "oz", "fl oz", "kg", "L", "lbs");
                     for ($i = 0; $i < count($measures); $i++) {
@@ -71,15 +71,16 @@
         <div class="actual-content">
             <div class="content-section">
                 <h2>What is Real Nutrition?</h2>
-                <p>Real Nutrition is a website that helps you to keep track of your nutrition. You can add your own food and meals and keep track of your daily nutrition.</p>
+                <p>Real Nutrition is a website that helps you to keep track of your nutrition. You can add your own food and meals and keep track of your daily intake.</p>
             </div>
             <div class="content-section">
                 <h2>How does it work?</h2>
-                <p>Real Nutrition is a website that helps you to keep track of your nutrition. You can add your own food and meals and keep track of your daily nutrition.</p>
+                <p>We have a database full of various foodstuffs and the nutrients of which they are comprised. With our calculator and mealplanner you can plan and track what you eat.</p>
             </div>
             <div class="content-section">
-                <h2>Why should I use it?</h2>
-                <p>Real Nutrition is a website that helps you to keep track of your nutrition. You can add your own food and meals and keep track of your daily nutrition.</p>
+                <h2>When can I use it?</h2>
+                <p>Our calculator is already finished however our database still need to be populated and the planner has to be styled. However you can sign up via e-mail already and we'll keep you updated!</p>
+                <a id="email-signup" href="/signup">Sign Up</a>
             </div>
         </div>
     </div>
