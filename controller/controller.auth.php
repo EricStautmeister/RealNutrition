@@ -21,6 +21,10 @@ class AuthController {
     }
 
     private function handlePost() {
+        if (!empty($_POST["new"])) {
+            $this->displayAuthPage(["email" => $_POST["email"], "password" => $_POST["password"]]);
+            return;
+        }
         $isclear = $this->checkRequirements();
         switch ($isclear) {
             case "Captcha incorrect":

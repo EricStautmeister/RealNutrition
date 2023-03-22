@@ -11,8 +11,9 @@ body {
 }
 
 #wrapper {
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
     width: 80%;
     max-width: 400px;
@@ -27,8 +28,8 @@ form {
     align-items: center;
     margin: 20px 0;
     gap: 5px;
-    width: -webkit-fill-available;
     max-width: 320px;
+    width: -webkit-fill-available;
 }
 
 input {
@@ -60,22 +61,31 @@ input {
     display: flex;
     justify-content: space-between;
     width: -webkit-fill-available;
-    margin: 15px 0;
+    margin-top: 15px;
 }
 
 #new {
     padding: 2px;
     width: 50px;
     height: 24px;
-    margin-left: 20px;
+    margin-left: 1vw;
+    cursor: pointer;
 }
 
 #captcha_img {
     margin-left: 5px;
 }
 
+#err {
+    color: red;
+    height: 26px;
+    font-size: 18px;
+    font-weight: 300;
+}
+
 #submit {
     width: 60%;
     height: 40px;
     font-size: 24px;
+    cursor: pointer;
 }
