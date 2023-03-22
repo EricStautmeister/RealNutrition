@@ -82,7 +82,7 @@ class EmailController {
                     cursor: pointer;
                 \"
             >
-                <a href=\"http://localhost:8000/email?email=$email&token=$token\" style=\"color: white;\">Authenticate</a>
+                <a href=\"http://localhost:8000/email?email=$email&token=$token\" style=\"color: white; text-decoration: none;\">Authenticate</a>
             </button>
             <p style=\"color: black; font-size: 15px; position: absolute; left: 45%; top: 52%; width: 300px;\">
                 If you did not sign up to RealNutrition please ignore this email

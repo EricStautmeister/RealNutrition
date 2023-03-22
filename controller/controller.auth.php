@@ -48,6 +48,7 @@ class AuthController {
             }
         } else if ($_SERVER["PATH_INFO"] == "/signup") {
             if (!$this->checkUserExistence($_POST["email"])) {
+                EmailController::displayEmailPage($_POST["email"]);
                 try {
                     $token = substr(md5(random_bytes(64)), 10, 22);
                     $this->authModel->newUserToVerify($_POST["email"], password_hash($_POST["password"], PASSWORD_DEFAULT), $token);
@@ -56,7 +57,6 @@ class AuthController {
                     return;
                 }
                 EmailController::sendMail($_POST["email"], $token);
-                EmailController::displayEmailPage($_POST["email"]);
             }
         }
     }
