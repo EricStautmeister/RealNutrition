@@ -17,7 +17,7 @@ class HomeController {
     private function displayPage($args = []) {
         extract($args);
         $foods = $this->model->getFoodNames();
-        include "view/home.php";
+        include "./view/home.php";
     }
 
     private function handlePost() {

@@ -13,7 +13,7 @@ $captcha_code  = substr($random_num, 0, 6);
 $_SESSION["captcha"] = $captcha_code;
 
 // Generate a 50x24 standard captcha image
-$im = imagecreatetruecolor(100, 30);
+$im = imagecreatetruecolor(130, 40);
 
 // Blue color
 $bg = imagecolorallocate($im, 22, 86, 165);
@@ -26,13 +26,16 @@ imagefill($im, 0, 0, $bg);
 
 // Print the captcha text in the image
 // with random position & size
-imagestring(
+imagettftext(
     $im,
-    rand(5, 7),
-    rand(1, 7),
-    rand(1, 7),
+    rand(24, 30),
+    0,
+    10,
+    32,
+    $fg,
+    "captcha.ttf",
     $captcha_code,
-    $fg
+
 );
 
 // VERY IMPORTANT: Prevent any Browser Cache!!
