@@ -27,7 +27,7 @@
             <h1>Real Nutrition</h1>
             <p>Real Nutrition is a website that helps you to keep track of your nutrition. You can add your own food and meals and keep track of your daily nutrition.</p>
             <button onclick="location.href='/login'">
-                <a href="/login">Login</a>
+                Login
             </button>
         </div>
     </div>
@@ -80,7 +80,7 @@
             <div class="content-section">
                 <h2>When can I use it?</h2>
                 <p>Our calculator is already finished however our database still need to be populated and the planner has to be styled. However you can sign up via e-mail already and we'll keep you updated!</p>
-                <a id="email-signup" href="/signup">Sign Up</a>
+                <button style="margin-top: 3rem;" onclick="location.href='/signup'">Sign Up</button>
             </div>
         </div>
     </div>

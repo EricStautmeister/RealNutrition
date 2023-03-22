@@ -77,7 +77,7 @@ class AuthController {
         try {
             $userexists = $this->authModel->checkUserExistence($email);
             if ($userexists) {
-                $this->displayAuthPage(["err" => "This user already has an account"]);
+                $this->displayAuthPage(["err" => "This user already exists"]);
                 return True;
             } else {
                 return False;
