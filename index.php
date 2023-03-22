@@ -56,5 +56,5 @@ try {
         $controller->handleRequest();
     }
 } catch (Exception $e) {
-    echo "Exeption " . $e->getMessage();
+    echo $e->getMessage();
 }

@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=Work Sans');
+@import url("https://fonts.googleapis.com/css?family=Work Sans");
 
 body {
-	margin: 0;
-	padding: 0;
-	font-family: 'Work Sans';
-	font-size: 22px;
-	color: #000;
+    margin: 0;
+    padding: 0;
+    font-family: "Work Sans";
+    font-size: 22px;
+    color: #000;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
@@ -15,20 +15,23 @@ body {
 }
 
 body::before {
-	content: '';
-	position: absolute;
-	background: url(../media/herobg.jpg) center/cover;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	z-index: -1;
-	pointer-events: none;
+    content: "";
+    position: absolute;
+    background: url(../media/herobg.jpg) center/cover;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    pointer-events: none;
     max-height: 100vh;
     width: 100vw;
 }
 
-a, a:hover, a:focus, a:active {
+a,
+a:hover,
+a:focus,
+a:active {
     text-decoration: none;
     color: inherit;
 }
