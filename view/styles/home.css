@@ -51,33 +51,6 @@
 	align-self: center;
 }
 
-@media screen and (max-width: 550px) {
-	.hero-text-wrapper {
-		max-width: 250px;
-	}
-}
-
-@media screen and (min-width: 800px) {
-	.hero-text-wrapper {
-		position: relative;
-		left: 8rem;
-	}
-}
-
-@media screen and (min-width: 900px) {
-	.hero-text-wrapper {
-		position: relative;
-		left: 12rem;
-	}
-}
-
-@media screen and (min-width: 1200px) {
-	.hero-text-wrapper {
-		position: relative;
-		left: 16rem;
-	}
-}
-
 .content {
 	display: flex;
 	flex-direction: column;
@@ -86,6 +59,7 @@
 	text-align: center;
 	background: linear-gradient(#0005, #b0b0b0);
 	color: white;
+    padding-bottom: 5rem;
 }
 
 .content button {
@@ -101,4 +75,91 @@
 	transition: all 0.3s ease;
 	text-decoration: none;
 	align-self: center;
+}
+
+.function-preview {
+	margin-top: 5rem;
+}
+
+.preview {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	color: white;
+}
+
+.input {
+	margin: 0.5rem;
+	padding: 1rem;
+	border: none;
+	border-radius: 5px;
+	background: var(--button-color) - 0.5;
+	color: white;
+	font-size: 1.2rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	text-decoration: none;
+	border-radius: 3px;
+	border: var(--button-color) 2px solid;
+}
+
+.actual-content {
+	display: block;
+}
+
+.actual-content .content-section {
+	margin-top: 5rem;
+}
+
+.use h3 {
+	margin-bottom: 2rem;
+}
+
+@media screen and (max-width: 550px) {
+	.hero-text-wrapper {
+		max-width: 250px;
+	}
+	.actual-content {
+		max-width: 250px;
+	}
+}
+
+@media screen and (max-width: 800px) {
+	.hero-text-wrapper {
+		position: relative;
+		left: 4rem;
+	}
+}
+
+@media screen and (min-width: 550px) {
+	.actual-content {
+		max-width: 450px;
+	}
+}
+
+@media screen and (min-width: 800px) {
+	.hero-text-wrapper {
+		position: relative;
+		left: 8rem;
+	}
+}
+
+@media screen and (min-width: 900px) {
+	.hero-text-wrapper {
+		position: relative;
+		left: 12rem;
+	}
+	.actual-content {
+		max-width: 700px;
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	.hero-text-wrapper {
+		position: relative;
+		left: 16rem;
+	}
 }

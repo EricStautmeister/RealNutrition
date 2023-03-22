@@ -396,12 +396,10 @@ class ModelFactory implements ModelFactoryInterface {
 
             foreach ($this->queries as $query) {
                 $stmt = $this->db->prepare($query->string);
-                // echo nl2br("\n" . $query->string . PHP_EOL);
                 foreach ($query->bindParams as $bps) {
-                    // echo nl2br($bps[0] . " -->binds--> " . $bps[1] . PHP_EOL);
                     $stmt->bindParam($bps[0], $bps[1]);
                 }
-                $this->printQueries();
+                // $this->printQueries();
                 $stmt->execute();
             }
             $this->db->commit();
