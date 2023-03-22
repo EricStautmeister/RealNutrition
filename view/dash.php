@@ -19,18 +19,11 @@
     <?php
     $userdata = [
         [0] => [
-            "breakfast" => [["name" => "Egg", "calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-            "lunch" => ["food" => "Chicken", "calories" => 165, "protein" => 31, "carbs" => 0, "fat" => 3.6],
+            "breakfast" => ["name" => "E", "calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3],
+            "lunch" => ["food" => "Ck", "calories" => 165, "protein" => 31, "carbs" => 0.1, "fat" => 3.6],
             "dinner" => ["food" => "Salad", "calories" => 15, "protein" => 1.4, "carbs" => 2.4, "fat" => 0.4],
             "snack" => ["food" => "Apple", "calories" => 52, "protein" => 0.3, "carbs" => 13.8, "fat" => 0.2]
-        ],
-        [1] => [
-            "breakfast" => ["food" => "Egg", "calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3],
-            "lunch" => ["food" => "Chicken", "calories" => 165, "protein" => 31, "carbs" => 0, "fat" => 3.6],
-            "dinner" => ["food" => "Salad", "calories" => 15, "protein" => 1.4, "carbs" => 2.4, "fat" => 0.4],
-            "snack" => ["food" => "Apple", "calories" => 52, "protein" => 0.3, "carbs" => 13.8, "fat" => 0.2]
-        ],
-
+        ]
     ];
 
     for ($i = 0; $i < count($userdata); $i++) {
