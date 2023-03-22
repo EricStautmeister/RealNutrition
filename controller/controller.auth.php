@@ -1,3 +1,4 @@
+
 <?php
 
 class AuthController {
@@ -89,7 +90,7 @@ class AuthController {
     }
 
     public function loginDashboard($email) {
-        $uid = $this->authModel->getUser($email);
+        $uid = $this->authModel->getUser($email)[0]["uid"];
         $e = new DashboardController();
         $e->loginUser($email, $uid);
         header("Location: /dashboard");

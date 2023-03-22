@@ -239,7 +239,7 @@ class AuthModelWrapper extends ModelFactory implements AuthInterface {
      * @param string $token The token of the user.
      * @return AuthModelWrapper Returns the AuthModelWrapper object.
      */
-    public function     verifyNewUser(string $email, string $token): AuthModelWrapper {
+    public function verifyNewUser(string $email, string $token): AuthModelWrapper {
         try {
             $user = $this->TempAuthTable->getUser($email);
             $this->TempAuthTable->validateUser($email, $token)

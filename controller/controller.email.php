@@ -48,38 +48,27 @@ class EmailController {
         </head>
     
         <body
-            style='
+            style=\"
                 padding: 0;
                 margin: 0;
                 overflow: hidden;
                 /* align-items: center; */
                 height: 100%;
                 width: 100%;
-            '
+            \"
         >
             <style>
-                @import url('https://fonts.googleapis.com/css?family=Work Sans');
+                @import url(\"https://fonts.googleapis.com/css?family=Work Sans\");
                 p {
                     font-family: Work Sans;
                 }
             </style>
-            <img
-                src='https://images.unsplash.com/photo-1490818387583-1baba5e638af?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1032&q=80;
-        '
-                alt=''
-                style='
-                    width: 800px;
-                    height: 500px;
-                    object-fit: cover;
-                    position: absolute;
-                    z-index: -1;
-                '
-            />
-            <p style='color: black; font-size: 15px; position: absolute; left: 45%; top: 36%;'>
+            
+            <p style=\"color: black; font-size: 15px; position: absolute; left: 45%; top: 36%;\">
                 Click this Button to Authenticate your Email
             </p>
             <button
-                style='
+                style=\"
                     color: black;
                     position: absolute;
                     left: 45%;
@@ -91,17 +80,25 @@ class EmailController {
                     border: none;
                     background: linear-gradient(to right, #c53b44, #fb9e61);
                     cursor: pointer;
-                '
+                \"
             >
-                <a
-                    style='text-decoration: none; color: white'
-                    href='http://localhost:8000/email?email={$email}&token={$token}'
-                    >Authenticate</a
-                >
+                <a href=\"http://localhost:8000/email?email=$email&token=$token\" style=\"color: white;\">Authenticate</a>
             </button>
-            <p style='color: black; font-size: 15px; position: absolute; left: 45%; top: 52%; width: 300px;'>
+            <p style=\"color: black; font-size: 15px; position: absolute; left: 45%; top: 52%; width: 300px;\">
                 If you did not sign up to RealNutrition please ignore this email
             </p>
+            <img
+                src=\"https://images.unsplash.com/photo-1490818387583-1baba5e638af?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1032&q=80;
+        \"
+                alt=\"\"
+                style=
+                    width: 800px;
+                    height: 500px;
+                    object-fit: cover;
+                    position: absolute;
+                    z-index: -1;
+                \"
+            />
         </body>
     </html>
     ";
