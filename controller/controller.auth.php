@@ -1,3 +1,4 @@
+-- Active: 1675327245155@@127.0.0.1@10000@nutrition
 <?php
 
 class AuthController {
@@ -41,7 +42,7 @@ class AuthController {
         if ($_SERVER["PATH_INFO"] == "/login") {
             try {
                 $this->authModel->validateUser($_POST["email"], $_POST["password"]);
-                AuthController::loginDashboard($_POST["email"]);
+                $this->loginDashboard($_POST["email"]);
             } catch (Exception $error) {
                 $this->displayAuthPage(["err" => $error, "email" => $_POST["email"]]);
                 return;
@@ -88,9 +89,10 @@ class AuthController {
         }
     }
 
-    public static function loginDashboard($email) {
+    public function loginDashboard($email) {
+        $uid = $this->authModel->getUser($email)[0]["uid"];
         $e = new DashboardController();
-        $e->loginUser($email);
+        $e->loginUser($email, $uid);
         header("Location: /dashboard");
     }
 }
