@@ -19,14 +19,12 @@
     <header>
         <form action="" method="post"></form>
     </header>
-    <?php session_start();
-    var_dump($_SESSION["uid"]); ?>
     <div class="hero hero-section">
         <div class="hero-text-wrapper">
             <h1>Real Nutrition</h1>
             <p>Real Nutrition is a website that helps you to keep track of your nutrition. You can add your own food and meals and keep track of your daily nutrition.</p>
             <button>
-                <a href="view/login.php">Login</a>
+                <a href="/login">Login</a>
             </button>
         </div>
     </div>
