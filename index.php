@@ -47,8 +47,6 @@ try {
         default:
             echo "This page does not exist!";
             echo "<a href='/'>Go back Home</a>";
-            var_dump($_SERVER);
-            phpinfo();
             break;
     }
 
@@ -58,5 +56,5 @@ try {
         $controller->handleRequest();
     }
 } catch (Exception $e) {
-    echo "Exeption" . $e;
+    echo "Exeption " . $e->getMessage();
 }
