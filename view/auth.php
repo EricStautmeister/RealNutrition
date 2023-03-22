@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <a id="home" href="/">Home</a>
+    <button onclick="location.href='/'">Home</button>
     <div id="content">
         <div id="wrapper">
             <p id="title"><?php echo ucfirst(substr($type, 1)) ?></p>
@@ -31,7 +31,7 @@
                                                                                             } ?>">
                 <div id="captcha_wrapper">
                     <div class="captcha">
-                        <p>Captcha</p><input id="new" name="new" type="submit" value="New">
+                        <p id="cp">Captcha</p><input id="new" name="new" type="submit" value="New">
                         <img id="captcha_img" src="./controller/captcha.php" alt="captcha">
                     </div>
                     <div class="captcha">

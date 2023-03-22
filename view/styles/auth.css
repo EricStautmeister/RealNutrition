@@ -28,12 +28,22 @@ p {
     color: white;
 }
 
-#home {
+button {
+    margin-top: 1rem;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 5px;
+    background: #0006;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    align-self: center;
     position: absolute;
-    top: 30px;
+    top: 20px;
     right: 50px;
-    font-size: 30px;
-    color: blue;
 }
 
 form {
@@ -63,12 +73,12 @@ input {
 
 a {
     text-decoration: underline;
-    color: aqua;
+    color: #1656a5;
 }
 
 a:hover {
     text-decoration: underline;
-    color: aqua;
+    color: #1656a5;
 }
 
 .captcha {
@@ -76,6 +86,10 @@ a:hover {
     flex-wrap: wrap;
     width: 50%;
     justify-content: left;
+}
+
+#cp {
+    margin-right: 10px;
 }
 
 .captcha > p {
@@ -93,7 +107,6 @@ a:hover {
     padding: 2px;
     width: 50px;
     height: 24px;
-    margin-left: 1vw;
     cursor: pointer;
     font-size: 18px;
     background: linear-gradient(to right, #c53b44, #fb9e61);
@@ -102,7 +115,7 @@ a:hover {
 }
 
 #captcha_img {
-    margin-left: 5px;
+    border-radius: 5px;
 }
 
 #err {

@@ -14,9 +14,9 @@ if (!isset($_SESSION['user'])) header("Location: /login");
     </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="styles/index.css">
-    <link rel="stylesheet" href="styles/dash.css">
-    <link rel="stylesheet" href="styles/normalise.css">
+    <link rel="stylesheet" href="view/styles/index.css">
+    <link rel="stylesheet" href="view/styles/dash.css">
+    <link rel="stylesheet" href="view/styles/normalise.css">
 </head>
 
 <body>
