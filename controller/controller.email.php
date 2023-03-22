@@ -14,12 +14,12 @@ class EmailController {
             $this->authModel->verifyNewUser($_REQUEST["email"], $_REQUEST["token"]);
             AuthController::loginDashboard($_REQUEST["email"]);
         } catch (Exception $error) {
-            print_r($error);
+            include "./view/err1.php";
         }
     }
 
     public static function displayEmailPage($email) {
-        include "email.testing.php";
+        include "./view/mail.php";
     }
 
     public static function sendMail($email, $token) {

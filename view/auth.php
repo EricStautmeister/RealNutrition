@@ -29,13 +29,16 @@
                                                                                         } ?>">
             <div id="captcha_wrapper">
                 <div class="captcha">
-                    <p>Captcha</p><input id="new" type="submit" value="New">
+                    <p>Captcha</p><input id="new" name="new" type="submit" value="New">
                     <img id="captcha_img" src="./controller/captcha.php" alt="captcha">
                 </div>
                 <div class="captcha">
                     <p>Enter Captcha</p><input type="text" name="captcha">
                 </div>
             </div>
+            <p id="err"><?php if (isset($err)) {
+                            echo $err;
+                        } ?></p>
             <input id="submit" type="submit" value="<?php echo ucfirst(substr($type, 1)) ?>">
         </form>
         <?php if ($type == "/login") {
