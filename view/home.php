@@ -19,8 +19,6 @@
     <header>
         <form action="" method="post"></form>
     </header>
-    <?php session_start();
-    var_dump($_SESSION["uid"]); ?>
     <div class="hero hero-section">
         <div class="hero-text-wrapper">
             <h1>Real Nutrition</h1>
