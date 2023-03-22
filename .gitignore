@@ -1,5 +1,6 @@
 .env
 /vendor
 testenv.php
+testenv.sql
 connectionTest.php
 testing.php
