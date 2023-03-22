@@ -20,62 +20,65 @@ if (!isset($_SESSION['user'])) header("Location: /login");
 </head>
 
 <body>
-    <button>
-        <a href="/">Home</a>
-    </button>
+    <div class="semi-header">
+        <button style="position: relative; left: 6.5rem;" onclick="location.href='/'">
+            Home
+        </button>
+        <p class="UserName"><?php echo $_SESSION["user"] ?></p>
+    </div>
     <div class="user-data-wrapper">
         <?php
         $days = array(
             array(
                 [
-                    "breakfast" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "lunch" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "dinner" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "snack" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]]
+                    "breakfast" => ["name" => "Eggs", "meta" => ["calories" => 78, "protein" => 9, "carbs" => 0.6, "fat" => 5.3]],
+                    "lunch" => ["name" => "Fish", "meta" => ["calories" => 234, "protein" => 40, "carbs" => 3, "fat" => 0.4]],
+                    "dinner" => ["name" => "Curry with Naaan", "meta" => ["calories" => 708, "protein" => 20, "carbs" => 87.6, "fat" => 15.3]],
+                    "snack" => ["name" => "Bard", "meta" => ["calories" => 20, "protein" => 3, "carbs" => 5, "fat" => 2003]]
                 ],
-                "timestamp" => "2020-01-01"
+                "timestamp" => "2023-07-21"
             ),
             array(
                 [
-                    "breakfast" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "lunch" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "dinner" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "snack" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]]
+                    "breakfast" => ["name" => "Apple", "meta" => ["calories" => 30, "protein" => 0.3, "carbs" => 30, "fat" => 0.5]],
+                    "lunch" => ["name" => "Donut", "meta" => ["calories" => 260, "protein" => 63, "carbs" => 40.6, "fat" => 53]],
+                    "dinner" => ["name" => "Airplane", "meta" => ["calories" => 780000, "protein" => 600.3, "carbs" => -200.6, "fat" => 540.3]],
+                    "snack" => ["name" => "Efeel", "meta" => ["calories" => 1208, "protein" => 3.3, "carbs" => 0.6, "fat" => 8.3]]
                 ],
-                "timestamp" => "2020-01-01"
+                "timestamp" => "1998-32-01"
             ),
             array(
                 [
-                    "breakfast" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "lunch" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "dinner" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "snack" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]]
+                    "breakfast" => ["name" => "tatiana", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
+                    "lunch" => ["name" => "red hering", "meta" => ["calories" => 798, "protein" => 56.3, "carbs" => 12.6, "fat" => 5.3]],
+                    "dinner" => ["name" => "Pussy", "meta" => ["calories" => -213, "protein" => 6, "carbs" => 3, "fat" => 1.23456321]],
+                    "snack" => ["name" => "Eee", "meta" => ["calories" => 58, "protein" => 9.4, "carbs" => 0.3, "fat" => 3]]
                 ],
-                "timestamp" => "2020-01-01"
+                "timestamp" => "2030-02-30"
             ),
             array(
                 [
-                    "breakfast" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "lunch" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "dinner" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "snack" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]]
+                    "breakfast" => ["name" => "Eggs", "meta" => ["calories" => 78, "protein" => 9, "carbs" => 0.6, "fat" => 5.3]],
+                    "lunch" => ["name" => "Donut", "meta" => ["calories" => 260, "protein" => 63, "carbs" => 40.6, "fat" => 53]],
+                    "dinner" => ["name" => "Airplane", "meta" => ["calories" => 780000, "protein" => 600.3, "carbs" => -200.6, "fat" => 540.3]],
+                    "snack" => ["name" => "Eee", "meta" => ["calories" => 58, "protein" => 9.4, "carbs" => 0.3, "fat" => 3]]
                 ],
-                "timestamp" => "2020-01-01"
+                "timestamp" => "2023-04-05"
             ),
             array(
                 [
-                    "breakfast" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "lunch" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
+                    "breakfast" => ["name" => "tatiana", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
+                    "lunch" => ["name" => "Fish", "meta" => ["calories" => 234, "protein" => 40, "carbs" => 3, "fat" => 0.4]],
                     "dinner" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "snack" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]]
+                    "snack" => ["name" => "Eee", "meta" => ["calories" => 58, "protein" => 9.4, "carbs" => 0.3, "fat" => 3]]
                 ],
-                "timestamp" => "2020-01-01"
+                "timestamp" => "2024-11-31"
             ),
             array(
                 [
-                    "breakfast" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "lunch" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
-                    "dinner" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]],
+                    "breakfast" => ["name" => "Apple", "meta" => ["calories" => 30, "protein" => 0.3, "carbs" => 30, "fat" => 0.5]],
+                    "lunch" => ["name" => "Fish", "meta" => ["calories" => 234, "protein" => 40, "carbs" => 3, "fat" => 0.4]],
+                    "dinner" => ["name" => "Pussy", "meta" => ["calories" => -213, "protein" => 6, "carbs" => 3, "fat" => 1.23456321]],
                     "snack" => ["name" => "E", "meta" => ["calories" => 78, "protein" => 6.3, "carbs" => 0.6, "fat" => 5.3]]
                 ],
                 "timestamp" => "2020-01-01"
@@ -85,7 +88,7 @@ if (!isset($_SESSION['user'])) header("Location: /login");
             $day = $days[$i];
 
             echo "<div class='user-data'>";
-            echo "<h2>Day " . $day["timestamp"] . count($days) . "</h2>";
+            echo "<h2>Day " . $day["timestamp"] . "</h2>";
             echo "<table>";
             echo "<tr>";
             echo "<th>Meal</th>";
