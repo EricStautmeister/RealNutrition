@@ -1,3 +1,6 @@
+<?php if (!isset($email)) {
+    header("Location: /");
+} ?>
 <!DOCTYPE html>
 <html>
 
