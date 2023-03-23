@@ -27,6 +27,13 @@ if (empty($_SESSION["user"])) {
             Home
         </button>
         <p class="UserName"><?php echo $_SESSION["user"] ?></p>
+        <form action="/dashboard" method="post">
+            <input type="text" name="food">
+            <input type="text" name="description">
+            <input type="number" name="calories">
+            <input type="submit" value="Upload">
+        </form>
+        <div><?php var_dump($data) ?></div>
     </div>
     <div class="user-data-wrapper">
         <?php

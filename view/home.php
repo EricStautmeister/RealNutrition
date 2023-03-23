@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="view/styles/index.css">
     <link rel="stylesheet" href="view/styles/home.css">
     <link rel="stylesheet" href="view/styles/normalise.css">
+    <link rel="stylesheet" href="view/styles/toggle.css">
     <script src="" async defer></script>
 
 </head>
@@ -57,15 +58,10 @@
                     ?>
                 </datalist>
 
-                <select name="meal" id="measure-selection" class="input">
-                    <?php
-                    $measures = array("g", "ml", "oz", "fl oz", "kg", "L", "lbs");
-                    for ($i = 0; $i < count($measures); $i++) {
-                        echo "<option class=\"food-option-$i\" value=\"$measures[$i]\">$measures[$i]</option>";
-                    }
-                    ?>
-                </select>
-
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
 
                 <input type="submit" value="Calculate">
             </form>
