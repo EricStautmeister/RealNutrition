@@ -5,7 +5,6 @@
 <html>
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Real Nutrition | Home</title>
@@ -15,15 +14,24 @@
     <link rel="stylesheet" href="view/styles/home.css">
     <link rel="stylesheet" href="view/styles/normalise.css">
     <link rel="stylesheet" href="view/styles/toggle.css">
-    <script src="" async defer></script>
-
+    <!-- <script src="" async defer></script> -->
 </head>
 
 <body>
-    <header>
-        <form action="" method="post"></form>
-    </header>
     <div class="hero hero-section">
+        <div class="hamburger-lines">
+            <span class="line line1"></span>
+            <span class="line line2"></span>
+            <span class="line line3"></span>
+        </div>
+        <!-- <ul class="menu-items">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#food">Category</a></li>
+            <li><a href="#food-menu">Menu</a></li>
+            <li><a href="#testimonials">Testimonial</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul> -->
         <div class="hero-text-wrapper">
             <h1>Real Nutrition</h1>
             <p>Real Nutrition is a website that helps you to keep track of your nutrition. You can add your own food and meals and keep track of your daily nutrition.</p>
@@ -48,15 +56,17 @@
                     ?>
                 </datalist>
 
-                <input name="amount" list="amount-selection" class="input" placeholder="Enter amount" />
-                <datalist id="amount-selection" class="selection amount-selection">
+                <input type="number" class="input" name="amount" placeholder="Enter amount" />
+
+                <!-- <input name="amount" list="amount-selection" class="input" placeholder="Enter amount" /> -->
+                <!-- <datalist id="amount-selection" class="selection amount-selection">
                     <?php
                     $amounts = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
                     for ($i = 0; $i < count($amounts); $i++) {
                         echo "<option class=\"food-option-$i\" value=\"$amounts[$i]\"/>";
                     }
                     ?>
-                </datalist>
+                </datalist> -->
 
                 <label class="switch">
                     <input type="checkbox">
