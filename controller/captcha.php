@@ -12,7 +12,6 @@ $captcha_code  = substr($random_num, 0, 6);
 // for the session
 $_SESSION["captcha"] = $captcha_code;
 
-// Generate a 50x24 standard captcha image
 $im = imagecreatetruecolor(130, 40);
 
 // Blue color
