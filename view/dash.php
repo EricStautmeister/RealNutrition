@@ -1,6 +1,8 @@
 <?php
 session_start();
-if (!isset($_SESSION['user'])) header("Location: /login");
+if (empty($_SESSION["user"])) {
+    header("location: /login");
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -25,6 +27,13 @@ if (!isset($_SESSION['user'])) header("Location: /login");
             Home
         </button>
         <p class="UserName"><?php echo $_SESSION["user"] ?></p>
+        <form action="/dashboard" method="post">
+            <input type="text" name="food">
+            <input type="text" name="description">
+            <input type="number" name="calories">
+            <input type="submit" value="Upload">
+        </form>
+        <div><?php var_dump($data) ?></div>
     </div>
     <div class="user-data-wrapper">
         <?php

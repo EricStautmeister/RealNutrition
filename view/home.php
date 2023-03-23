@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="view/styles/index.css">
     <link rel="stylesheet" href="view/styles/home.css">
     <link rel="stylesheet" href="view/styles/normalise.css">
+    <link rel="stylesheet" href="view/styles/toggle.css">
     <script src="" async defer></script>
 
 </head>
@@ -42,31 +43,31 @@
                 <datalist id="food-selection" class="selection food-selection">
                     <?php
                     for ($i = 0; $i < count($foods); $i++) {
-                        echo "<option class='food-option-" . $i . "' value='" . $foods[$i] . "' />";
+                        echo "<option class=\"food-option-$i\" value=\"$foods[$i]\"/>";
                     }
                     ?>
                 </datalist>
 
-                <select name="meal" id="measure-selection" placeholder="unit">
-                    <?php
-                    $measures = array("g", "ml", "oz", "fl oz", "kg", "L", "lbs");
-                    for ($i = 0; $i < count($measures); $i++) {
-                        echo "<option class='food-option-" . $i . "' value='" . $measures[$i] . "' />";
-                    }
-                    ?>
-                </select>
-
-                <input name="amount" list="amount-selection" class="input" placeholder="Select amount" />
+                <input name="amount" list="amount-selection" class="input" placeholder="Enter amount" />
                 <datalist id="amount-selection" class="selection amount-selection">
                     <?php
                     $amounts = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
                     for ($i = 0; $i < count($amounts); $i++) {
-                        echo "<option class='food-option-" . $i . "' value='" . $amounts[$i] . "' />";
+                        echo "<option class=\"food-option-$i\" value=\"$amounts[$i]\"/>";
                     }
                     ?>
                 </datalist>
+
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+
                 <input type="submit" value="Calculate">
             </form>
+            <div>
+                <?php var_dump($data) ?>
+            </div>
         </div>
         <div class="actual-content">
             <div class="content-section">
