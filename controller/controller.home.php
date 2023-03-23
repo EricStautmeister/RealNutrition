@@ -22,6 +22,7 @@
 
         private function handlePost() {
             $food = $this->foodModel->getFoodData($_POST["food"]);
+            $amount = $_POST["amount"];
             $this->displayPage(["data" => $food]);
         }
     }
