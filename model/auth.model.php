@@ -98,7 +98,8 @@ class TempAuthTable extends ModelFactory implements TempAuthInterface {
      * @return array Returns the user from the database.
      */
     public function getUser(string $email) {
-        $user = $this->select("email", $email)[0];
+        $userarray = $this->select("email", $email);
+        $user = end($userarray);
         unset($user["id"]);
         return $user;
     }
