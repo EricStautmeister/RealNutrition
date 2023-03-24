@@ -19,20 +19,20 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	position: absolute;
-	background: linear-gradient(#0003, #d7d2cc);
+	background: #0003;
 }
 
 body::before {
 	content: '';
 	position: absolute;
-	background: url(../media/herobg.jpg) center/cover;
+	background: url(../media/herobg.jpg) center/cover fixed;
 	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	z-index: -1;
 	pointer-events: none;
-	max-height: 100vh;
+	/* max-height: 100vh; */
 	width: 100vw;
 }
 
@@ -49,7 +49,7 @@ footer {
 	flex-direction: column;
 	justify-content: flex-end;
 	align-items: center;
-	background-color: #b0b0b0;
+	background-color: #0008;
 	font-size: 14px;
 }
 

@@ -64,7 +64,7 @@ overlay-container {
 	align-items: center;
 	justify-content: center;
 	text-align: center;
-	background: linear-gradient(#0005, #b0b0b0);
+	background: linear-gradient(#0003, #0008);
 	color: white;
 	padding-bottom: 5rem;
 }
