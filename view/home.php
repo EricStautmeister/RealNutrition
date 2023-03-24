@@ -10,28 +10,37 @@
     <title>Real Nutrition | Home</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="view/styles/normalise.css">
     <link rel="stylesheet" href="view/styles/index.css">
     <link rel="stylesheet" href="view/styles/home.css">
-    <link rel="stylesheet" href="view/styles/normalise.css">
+    <link rel="stylesheet" href="view/styles/navbar.css">
     <link rel="stylesheet" href="view/styles/toggle.css">
     <!-- <script src="" async defer></script> -->
 </head>
 
 <body>
+    <div class="overlay-container">
+        <nav class="navbar">
+            <div class="navbar-container container">
+                <input type="checkbox" name="" id="">
+                <div class="hamburger-lines">
+                    <span class="line line1"></span>
+                    <span class="line line2"></span>
+                    <span class="line line3"></span>
+                </div>
+                <ul class="menu-items">
+                    <li><a onclick="location.href='/home'">Home</a></li>
+                    <li><a onclick="location.href='/dashboard'">Dashboard</a></li>
+                    <li><a onclick="location.href='/about-us'">About Us</a></li>
+                    <li><a onclick="location.href='/login'">Login</a></li>
+                    <li><a onclick="location.href='/signup'">Signup</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    </div>
+
     <div class="hero hero-section">
-        <div class="hamburger-lines">
-            <span class="line line1"></span>
-            <span class="line line2"></span>
-            <span class="line line3"></span>
-        </div>
-        <!-- <ul class="menu-items">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#food">Category</a></li>
-            <li><a href="#food-menu">Menu</a></li>
-            <li><a href="#testimonials">Testimonial</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul> -->
         <div class="hero-text-wrapper">
             <h1>Real Nutrition</h1>
             <p>Real Nutrition is a website that helps you to keep track of your nutrition. You can add your own food and meals and keep track of your daily nutrition.</p>
@@ -40,6 +49,9 @@
             </button>
         </div>
     </div>
+    </div>
+
+
 
     <div class="content">
         <div name="use" class="function-preview">

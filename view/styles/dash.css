@@ -1,79 +1,80 @@
 .user-data-wrapper {
-    width: 100vw;
-    height: auto;
-    background: #b0b0b0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+	width: 100vw;
+	height: auto;
+	background: #b0b0b0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 button {
-    margin: 1rem;
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 5px;
-    background: #0006;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    max-width: 200px;
-    align-self: center;
+	margin: 1rem;
+	padding: 1rem 2rem;
+	border: none;
+	border-radius: 5px;
+	background: #0006;
+	color: white;
+	font-size: 1.2rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	text-decoration: none;
+	max-width: 200px;
+	align-self: center;
 }
 
 .user-data {
-    margin: 2rem;
-    padding: 2rem;
+	margin: 2rem;
+	padding: 2rem;
 
-    background: rgba(255, 255, 255, 0.65);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
+	background: rgba(255, 255, 255, 0.65);
+	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	border-radius: 10px;
+	border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .user-data th {
-    padding: 0.5rem;
-    text-align: left;
-    border-bottom: 1px solid #000;
+	padding: 0.5rem;
+	text-align: left;
+	border-bottom: 1px solid #000;
 }
 .user-data td {
-    padding: 0.5rem;
-    text-align: left;
+	padding: 0.5rem;
+	text-align: left;
 }
 
 .semi-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px;
-    justify-content: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 40px;
+	justify-content: center;
+	padding-top: 4%;
 }
 
 .UserName {
-    position: relative;
-    left: 32%;
-    padding: 10px;
-    font-size: 2rem;
-    font-weight: 800;
-    color: #000;
-    border: #000 3px solid;
+	position: relative;
+	left: 32%;
+	padding: 10px;
+	font-size: 2rem;
+	font-weight: 800;
+	color: #000;
+	border: #000 3px solid;
 }
 
 @media screen and (max-width: 800px) {
-    .UserName {
-        position: relative;
-        left: 20%;
-    }
+	.UserName {
+		position: relative;
+		left: 20%;
+	}
 }
 
 @media screen and (max-width: 500px) {
-    .UserName {
-        position: relative;
-        left: 10%;
-    }
+	.UserName {
+		position: relative;
+		left: 10%;
+	}
 }
