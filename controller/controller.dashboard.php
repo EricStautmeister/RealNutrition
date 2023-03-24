@@ -26,6 +26,12 @@ class DashboardController {
         $_SESSION["uid"] = $uid;
     }
 
+    public function LogoutUser() {
+        session_start();
+        $_SESSION["user"] = null;
+        $_SESSION["uid"] = null;
+    }
+
     private function handlePost() {
         $this->foodModel->addFood($_POST["food"], floatval($_POST["calories"]));
         $food = $this->foodModel->getFoodNames();
