@@ -191,7 +191,7 @@ class FoodModelWrapper extends ModelFactory implements FoodModel {
         $cols = $this->mandatory_table_elements;
         $cols = array_splice($cols, 1, 2);
         for ($i = 0; $i < count($opt_food_data); $i++) {
-            if ($opt_food_data[$i] != null && $opt_food_data[$i] !== "" && $opt_food_data[$i] !== " " && $opt_food_data[$i] !== "0") {
+            if ($opt_food_data[$i] != null && $opt_food_data[$i] !== " " && $opt_food_data[$i] !== "0") {
                 array_push($food_data, $opt_food_data[$i]);
                 array_push($cols, $this->optional_table_elements[$i]);
             }
