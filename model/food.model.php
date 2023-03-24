@@ -8,39 +8,38 @@ interface FoodModel {
     public function getFoodDataByColumn(string $column, string $data): array;
     public function addFood(
         string $name,
-        string $description,
-        string $calories,
-        string $fat = null,
-        string $protein = null,
-        string $carbs = null,
-        string $saturated_fat = null,
-        string $sodium = null,
-        string $sugar = null,
-        string $cholesterol = null,
-        string $fiber = null,
-        string $potassium = null
+        float $calories,
+        string $description = "",
+        float $fat = null,
+        float $protein = null,
+        float $carbs = null,
+        float $saturated_fat = null,
+        float $sodium = null,
+        float $sugar = null,
+        float $cholesterol = null,
+        float $fiber = null,
+        float $potassium = null
     ): void;
     public function updateFood(
         string $constrol_column,
         string $control_value,
         string $name,
-        string $description,
-        string $calories,
-        string $fat = null,
-        string $protein = null,
-        string $carbs = null,
-        string $saturated_fat = null,
-        string $sodium = null,
-        string $sugar = null,
-        string $cholesterol = null,
-        string $fiber = null,
-        string $potassium = null
+        float $calories,
+        string $description = "",
+        float $fat = null,
+        float $protein = null,
+        float $saturated_fat = null,
+        float $carbs = null,
+        float $sodium = null,
+        float $sugar = null,
+        float $cholesterol = null,
+        float $fiber = null,
+        float $potassium = null
     ): void;
     public function deleteFood(string $control_column, string $control_value): void;
 
     public function load(): array;
     public function save(): void;
-
 }
 
 /**
@@ -89,10 +88,10 @@ class FoodModelWrapper extends ModelFactory implements FoodModel {
         $this->mandatory_table_elements = [
             "id",
             "name",
-            "description",
             "calories",
         ];
         $this->optional_table_elements = [
+            "description",
             "fat",
             "protein",
             "carbs",
@@ -115,18 +114,18 @@ class FoodModelWrapper extends ModelFactory implements FoodModel {
             [
                 "INT(11) NOT NULL AUTO_INCREMENT",
                 "VARCHAR(255) NOT NULL",
-                "VARCHAR(255) NOT NULL",
-                "VARCHAR(255) NOT NULL",
+                "FLOAT(30) NOT NULL",
 
                 "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
+                "FLOAT(30)",
+                "FLOAT(30)",
+                "FLOAT(30)",
+                "FLOAT(30)",
+                "FLOAT(30)",
+                "FLOAT(30)",
+                "FLOAT(30)",
+                "FLOAT(30)",
+                "FLOAT(30)",
 
                 "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP",
                 "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
@@ -145,40 +144,40 @@ class FoodModelWrapper extends ModelFactory implements FoodModel {
     /**
      * Adds a food to the database.
      * @param string $name
+     * @param float $calories
      * @param string $description
-     * @param string $calories
-     * @param string|null $fat
-     * @param string|null $protein
-     * @param string|null $carbs
-     * @param string|null $saturated_fat
-     * @param string|null $sodium
-     * @param string|null $sugar
-     * @param string|null $cholesterol
-     * @param string|null $fiber
-     * @param string|null $potassium
+     * @param float|null $fat
+     * @param float|null $protein
+     * @param float|null $carbs
+     * @param float|null $saturated_fat
+     * @param float|null $sodium
+     * @param float|null $sugar
+     * @param float|null $cholesterol
+     * @param float|null $fiber
+     * @param float|null $potassium
      * @return void
      */
     // TODO: Add a function to get specific food data, filtered by data and column
     public function addFood(
         string $name,
-        string $description,
-        string $calories,
-        string $fat = null,
-        string $protein = null,
-        string $carbs = null,
-        string $saturated_fat = null,
-        string $sodium = null,
-        string $sugar = null,
-        string $cholesterol = null,
-        string $fiber = null,
-        string $potassium = null,
+        float $calories,
+        string $description = "",
+        float $fat = null,
+        float $protein = null,
+        float $carbs = null,
+        float $saturated_fat = null,
+        float $sodium = null,
+        float $sugar = null,
+        float $cholesterol = null,
+        float $fiber = null,
+        float $potassium = null,
     ): void {
         $food_data = [
             $name,
-            $description,
             $calories,
         ];
         $opt_food_data = [
+            $description,
             $fat,
             $protein,
             $carbs,
@@ -190,7 +189,7 @@ class FoodModelWrapper extends ModelFactory implements FoodModel {
             $potassium
         ];
         $cols = $this->mandatory_table_elements;
-        $cols = array_splice($cols, 1, 3);
+        $cols = array_splice($cols, 1, 2);
         for ($i = 0; $i < count($opt_food_data); $i++) {
             if ($opt_food_data[$i] != null && $opt_food_data[$i] !== "" && $opt_food_data[$i] !== " " && $opt_food_data[$i] !== "0") {
                 array_push($food_data, $opt_food_data[$i]);
@@ -252,34 +251,34 @@ class FoodModelWrapper extends ModelFactory implements FoodModel {
      * @param string $control_column
      * @param string $control_value
      * @param string $name
+     * @param float $calories
      * @param string $description
-     * @param string $calories
-     * @param string|null $fat
-     * @param string|null $protein
-     * @param string|null $carbs
-     * @param string|null $saturated_fat
-     * @param string|null $sodium
-     * @param string|null $sugar
-     * @param string|null $cholesterol
-     * @param string|null $fiber
-     * @param string|null $potassium
+     * @param float|null $fat
+     * @param float|null $protein
+     * @param float|null $carbs
+     * @param float|null $saturated_fat
+     * @param float|null $sodium
+     * @param float|null $sugar
+     * @param float|null $cholesterol
+     * @param float|null $fiber
+     * @param float|null $potassium
      * @return void
      */
     public function updateFood(
         string $constrol_column,
         string $control_value,
         string $name,
-        string $description,
-        string $calories,
-        string $fat = null,
-        string $protein = null,
-        string $carbs = null,
-        string $saturated_fat = null,
-        string $sodium = null,
-        string $sugar = null,
-        string $cholesterol = null,
-        string $fiber = null,
-        string $potassium = null,
+        float $calories,
+        string $description = "",
+        float $fat = null,
+        float $protein = null,
+        float $carbs = null,
+        float $saturated_fat = null,
+        float $sodium = null,
+        float $sugar = null,
+        float $cholesterol = null,
+        float $fiber = null,
+        float $potassium = null,
     ): void {
         $food_data = [
             $name,
