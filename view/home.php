@@ -76,7 +76,7 @@
                 <input type="submit" value="Calculate">
             </form>
             <div>
-                <?php var_dump($data) ?>
+                <?php var_dump($datarr) ?>
             </div>
         </div>
         <div class="actual-content">

@@ -40,7 +40,6 @@ interface FoodModel {
 
     public function load(): array;
     public function save(): void;
-
 }
 
 /**
@@ -115,18 +114,18 @@ class FoodModelWrapper extends ModelFactory implements FoodModel {
             [
                 "INT(11) NOT NULL AUTO_INCREMENT",
                 "VARCHAR(255) NOT NULL",
-                "VARCHAR(255) NOT NULL",
+                "VARCHAR(255)",
                 "VARCHAR(255) NOT NULL",
 
-                "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
-                "VARCHAR(255)",
+                "FLOAT(20)",
+                "FLOAT(20)",
+                "FLOAT(20)",
+                "FLOAT(20)",
+                "FLOAT(20)",
+                "FLOAT(20)",
+                "FLOAT(20)",
+                "FLOAT(20)",
+                "FLOAT(20)",
 
                 "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP",
                 "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"

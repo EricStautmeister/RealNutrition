@@ -21,8 +21,18 @@
         }
 
         private function handlePost() {
-            $food = $this->foodModel->getFoodData($_POST["food"]);
+            $fooddata = $this->foodModel->getFoodData($_POST["food"])[0];
             $amount = $_POST["amount"];
-            $this->displayPage(["data" => $food]);
+            $food["name"] = $fooddata["name"];
+            $food["calories"] = $amount / 100 * $fooddata["calories"];
+
+            foreach ($fooddata as $foodie) {
+                if ($foodie == null || is_string($foodie)) {
+                    array_push($food, 0);
+                } else {
+                    array_push($food, $amount / 100 * $foodie);
+                }
+            }
+            $this->displayPage(["datarr" => $food]);
         }
     }
