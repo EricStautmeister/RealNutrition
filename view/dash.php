@@ -43,17 +43,22 @@ if (empty($_SESSION["user"])) {
         </nav>
 
     </div>
-    <div class="semi-header">
-        <p class="UserName"><?php echo $_SESSION["user"] ?></p>
-        <form action="/dashboard" method="post">
-            <input type="text" name="food">
-            <input type="text" name="description">
-            <input type="number" name="calories">
-            <input type="submit" value="Upload">
-        </form>
-        <div><?php var_dump($data) ?></div>
-    </div>
     <div class="user-data-wrapper">
+        <input type="checkbox" name="" id="">
+        <p class="data-reveal-label">Add Data</p>
+        <div class="data-manipulator">
+            <form action="/dashboard" method="post">
+                <input type="text" name="food">
+                <input type="text" name="description">
+                <input type="number" name="calories">
+                <input type="submit" value="Upload">
+            </form>
+            <p class="UserName"><?php echo $_SESSION["user"] ?></p>
+            <!-- <div><?php var_dump($data) ?></div> -->
+        </div>
+
+
+
         <?php
         $days = array(
             array(
