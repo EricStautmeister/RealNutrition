@@ -27,7 +27,7 @@ class DashboardController {
     }
 
     private function handlePost() {
-        $this->foodModel->addFood($_POST["food"], $_POST["description"], $_POST["calories"]);
+        $this->foodModel->addFood($_POST["food"], floatval($_POST["calories"]));
         $food = $this->foodModel->getFoodNames();
         $this->displayPage(["data" => $food]);
     }

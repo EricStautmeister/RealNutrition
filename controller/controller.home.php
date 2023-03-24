@@ -21,18 +21,34 @@
         }
 
         private function handlePost() {
-            $fooddata = $this->foodModel->getFoodData($_POST["food"])[0];
-            $amount = $_POST["amount"];
-            $food["name"] = $fooddata["name"];
-            $food["calories"] = $amount / 100 * $fooddata["calories"];
+            try {
+                $this->checkInput();
+                $fooddata = $this->foodModel->getFoodData($_POST["food"])[0];
+            } catch (Exception $err) {
+                $this->displayPage(["err" => $err]);
+                return;
+            }
 
+            $food = array();
             foreach ($fooddata as $foodie) {
-                if ($foodie == null || is_string($foodie)) {
-                    array_push($food, 0);
+                if (is_numeric($foodie)) {
+                    array_push($food, $_POST["amount"] / 100 * $foodie);
                 } else {
-                    array_push($food, $amount / 100 * $foodie);
+                    array_push($food, $foodie);
                 }
             }
             $this->displayPage(["datarr" => $food]);
+        }
+
+        private function checkInput() {
+            if (empty($_POST["food"])) {
+                throw new Exception("Enter a food item");
+            }
+            if (empty($_POST["amount"])) {
+                $_POST["amount"] = 100;
+            }
+            if (!is_numeric($_POST["amount"])) {
+                throw new Exception("Enter a valid number");
+            }
         }
     }

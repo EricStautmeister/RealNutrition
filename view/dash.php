@@ -33,7 +33,7 @@ if (empty($_SESSION["user"])) {
                     <span class="line line3"></span>
                 </div>
                 <ul class="menu-items">
-                    <li><a onclick="location.href='/home'">Home</a></li>
+                    <li><a onclick="location.href='/'">Home</a></li>
                     <li><a onclick="location.href='/dashboard'">Dashboard</a></li>
                     <li><a onclick="location.href='/about-us'">About Us</a></li>
                     <li><a onclick="location.href='/login'">Login</a></li>
@@ -45,10 +45,9 @@ if (empty($_SESSION["user"])) {
     </div>
     <div class="semi-header">
         <p class="UserName"><?php echo $_SESSION["user"] ?></p>
-        <form action="/dashboard" method="post">
+        <form action="/dashboard" method="post" autocomplete="off">
             <input type="text" name="food">
-            <input type="text" name="description">
-            <input type="number" name="calories">
+            <input type="number" step="0.1" name="calories">
             <input type="submit" value="Upload">
         </form>
         <div><?php var_dump($data) ?></div>
