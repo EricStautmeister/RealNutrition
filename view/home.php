@@ -58,7 +58,7 @@
             <label for="preview" class="use">
                 <h3>Test our functionality</h3>
             </label>
-            <form class="preview" action="/" method="post" autocomplete="off">
+            <form class="preview" action="/home" method="post" autocomplete="off">
                 <input name="food" list="food-selection" class="input" placeholder="Select a food" />
                 <datalist id="food-selection" class="selection food-selection">
                     <?php
@@ -87,9 +87,11 @@
 
                 <input type="submit" value="Calculate">
             </form>
-            <div><?php echo $err; ?></div>
+            <div><?php if (isset($err)) {
+                        echo $err;
+                    } ?></div>
             <div>
-                <?php var_dump($datarr); ?>
+                <?php var_dump($fooddata); ?>
             </div>
         </div>
         <div class="actual-content">

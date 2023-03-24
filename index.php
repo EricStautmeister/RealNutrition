@@ -37,6 +37,9 @@ try {
         case "/email":
             $controller = new EmailController();
             break;
+        case "/home":
+            $controller = new HomeController();
+            break;
         case "/":
             $controller = new HomeController();
             break;

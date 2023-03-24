@@ -23,21 +23,28 @@
         private function handlePost() {
             try {
                 $this->checkInput();
-                $fooddata = $this->foodModel->getFoodData($_POST["food"])[0];
-            } catch (Exception $err) {
-                $this->displayPage(["err" => $err]);
-                return;
-            }
-
-            $food = array();
-            foreach ($fooddata as $foodie) {
-                if (is_numeric($foodie)) {
-                    array_push($food, $_POST["amount"] / 100 * $foodie);
+                $response = $this->foodModel->getFoodData($_POST["food"]);
+                if ($response[0]) {
+                    $fooddata = $response[0];
                 } else {
-                    array_push($food, $foodie);
                 }
+            } catch (Exception $err) {
+                $this->displayPage(["err" => $err->getMessage()]);
             }
-            $this->displayPage(["datarr" => $food]);
+            if (isset($fooddata)) {
+                $food = array();
+                foreach ($fooddata as $foodvalue) {
+                    if (is_numeric($foodvalue)) {
+                        array_push($food, $_POST["amount"] / 100 * $foodvalue);
+                    } else if ($foodvalue == null) {
+                        array_push($food, 0);
+                    } else {
+                        array_push($food, $foodvalue);
+                    }
+                }
+                array_shift($food);
+                $this->displayPage(["fooddata" => $food]);
+            }
         }
 
         private function checkInput() {
