@@ -25,6 +25,8 @@ if (empty($_SESSION["user"])) {
 <body>
     <div class="overlay-container">
         <nav class="navbar">
+            <p class="user-name"><?php echo ucfirst($_SESSION["user"]) ?></p>
+
             <div class="navbar-container container">
                 <input type="checkbox" name="" id="">
                 <div class="hamburger-lines">
@@ -35,7 +37,7 @@ if (empty($_SESSION["user"])) {
                 <ul class="menu-items">
                     <li><a onclick="location.href='/'">Home</a></li>
                     <li><a onclick="location.href='/dashboard'">Dashboard</a></li>
-                    <li><a onclick="location.href='/about-us'">About Us</a></li>
+                    <!-- <li><a onclick="location.href='/about-us'">About Us</a></li> -->
                     <li><a onclick="location.href='/login'">Login</a></li>
                     <li><a onclick="location.href='/signup'">Signup</a></li>
                 </ul>
@@ -44,19 +46,29 @@ if (empty($_SESSION["user"])) {
 
     </div>
     <div class="user-data-wrapper">
-        <input type="checkbox" name="" id="">
-        <p class="data-reveal-label">Add Data</p>
-        <div class="data-manipulator">
-            <form action="/dashboard" method="post" autocomplete="off">
-            <input type="text" name="food">
-            <input type="number" step="0.1" name="calories">
-            <input type="submit" value="Upload">
-        </form>
-            <p class="UserName"><?php echo $_SESSION["user"] ?></p>
-            <!-- <div><?php var_dump($data) ?></div> -->
+        <div class="animation-group">
+            <button class="data-revealer">Add Data</button>
+            <div class="data-manipulator invisible">
+                <form action="/dashboard" method="post" autocomplete="off">
+                    <input type="text" name="food">
+                    <input type="number" step="0.1" name="calories">
+                    <input type="submit" value="Upload">
+                </form>
+                <!-- <div><?php var_dump($data) ?></div> -->
+            </div>
+            <script>
+                const dataRevealLabel = document.querySelector(".data-revealer");
+                const dataManipulator = document.querySelector(".data-manipulator");
+
+                dataRevealLabel.addEventListener("click", () => {
+                    if (dataManipulator.classList.contains("invisible")) {
+                        dataManipulator.classList.remove("invisible");
+                    } else {
+                        dataManipulator.classList.add("invisible");
+                    }
+                });
+            </script>
         </div>
-
-
 
         <?php
         $days = array(
