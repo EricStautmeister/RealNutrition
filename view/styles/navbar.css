@@ -17,6 +17,18 @@
 	height: 50px;
 	z-index: 12;
 	padding-right: 4rem;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.user-name {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 10px;
+	margin-left: 3vw;
+	font-weight: 700;
 }
 
 .navbar-container {
