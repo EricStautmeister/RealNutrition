@@ -32,8 +32,12 @@
                     <li><a onclick="location.href='/home'">Home</a></li>
                     <li><a onclick="location.href='/dashboard'">Dashboard</a></li>
                     <!-- <li><a onclick="location.href='/about-us'">About Us</a></li> -->
-                    <li><a onclick="location.href='/login'">Login</a></li>
-                    <li><a onclick="location.href='/signup'">Signup</a></li>
+                    <?php if (isset($_SESSION["user"])) {
+                        echo "<li><a onclick=\"location.href='/logout'\">Logout</a></li>";
+                    } else {
+                        echo "<li><a onclick=\"location.href='/login'\">Login</a></li>";
+                        echo "<li><a onclick=\"location.href='/signup'\">Signup</a></li>";
+                    }?>
                 </ul>
             </div>
         </nav>
