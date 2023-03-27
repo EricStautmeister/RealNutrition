@@ -38,8 +38,12 @@ if (empty($_SESSION["user"])) {
                     <li><a onclick="location.href='/'">Home</a></li>
                     <li><a onclick="location.href='/dashboard'">Dashboard</a></li>
                     <!-- <li><a onclick="location.href='/about-us'">About Us</a></li> -->
-                    <li><a onclick="location.href='/login'">Login</a></li>
-                    <li><a onclick="location.href='/signup'">Signup</a></li>
+                    <?php if (isset($_SESSION["user"])) {
+                        echo "<li><a onclick=\"location.href='/logout'\">Logout</a></li>";
+                    } else {
+                        echo "<li><a onclick=\"location.href='/login'\">Login</a></li>";
+                        echo "<li><a onclick=\"location.href='/signup'\">Signup</a></li>";
+                    } ?>
                 </ul>
             </div>
         </nav>
@@ -51,7 +55,7 @@ if (empty($_SESSION["user"])) {
             <div class="data-manipulator invisible">
                 <form action="/dashboard" method="post" autocomplete="off">
                     <input type="text" name="food">
-                    <input type="number" step="0.1" name="calories">
+                    <input type="number" step="0.1" name="meal">
                     <input type="submit" value="Upload">
                 </form>
                 <!-- <div><?php var_dump($data) ?></div> -->
