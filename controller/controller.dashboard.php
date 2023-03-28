@@ -20,16 +20,17 @@ class DashboardController {
         include "./view/dash.php";
     }
 
-    public function loginUser($newuser, $uid) {
+    public static function loginUser($newuser, $uid) {
         session_start();
         $_SESSION["user"] = explode("@", htmlspecialchars($newuser))[0];
         $_SESSION["uid"] = $uid;
     }
 
-    public function LogoutUser() {
+    public static function logoutUser() {
         session_start();
-        $_SESSION["user"] = null;
-        $_SESSION["uid"] = null;
+        unset($_SESSION["user"]);
+        unset($_SESSION["uid"]);
+        session_destroy();
     }
 
     private function handlePost() {

@@ -30,7 +30,7 @@
                 <ul class="menu-items">
                     <li><a onclick="location.href='/home'">Home</a></li>
                     <li><a onclick="location.href='/dashboard'">Dashboard</a></li>
-                    <li><a onclick="location.href='/about-us'">About Us</a></li>
+                    <li><a onclick="location.href='/view/food.php'">About Us</a></li>
                     <li><a onclick="location.href='/login'">Login</a></li>
                     <li><a onclick="location.href='/signup'">Signup</a></li>
                 </ul>

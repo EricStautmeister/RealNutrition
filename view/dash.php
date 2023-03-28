@@ -35,7 +35,7 @@ if (empty($_SESSION["user"])) {
                 <ul class="menu-items">
                     <li><a onclick="location.href='/'">Home</a></li>
                     <li><a onclick="location.href='/dashboard'">Dashboard</a></li>
-                    <li><a onclick="location.href='/about-us'">About Us</a></li>
+                    <li><a onclick="location.href='/view/food.php'">About Us</a></li>
                     <li><a onclick="location.href='/login'">Login</a></li>
                     <li><a onclick="location.href='/signup'">Signup</a></li>
                 </ul>
@@ -48,12 +48,11 @@ if (empty($_SESSION["user"])) {
         <p class="data-reveal-label">Add Data</p>
         <div class="data-manipulator">
             <form action="/dashboard" method="post" autocomplete="off">
-            <input type="text" name="food">
-            <input type="number" step="0.1" name="calories">
-            <input type="submit" value="Upload">
-        </form>
+                <input type="text" name="food">
+                <input type="number" step="0.1" name="calories">
+                <input type="submit" value="Upload">
+            </form>
             <p class="UserName"><?php echo $_SESSION["user"] ?></p>
-            <!-- <div><?php var_dump($data) ?></div> -->
         </div>
 
 
