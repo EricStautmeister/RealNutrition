@@ -19,6 +19,8 @@
 <body>
     <div class="overlay-container">
         <nav class="navbar">
+            <p class="user-name"><?php echo ucfirst($_SESSION["user"]) ?></p>
+
             <div class="navbar-container container">
                 <input type="checkbox" name="" id="">
                 <div class="hamburger-lines">
@@ -29,9 +31,13 @@
                 <ul class="menu-items">
                     <li><a onclick="location.href='/home'">Home</a></li>
                     <li><a onclick="location.href='/dashboard'">Dashboard</a></li>
-                    <li><a onclick="location.href='/about-us'">About Us</a></li>
-                    <li><a onclick="location.href='/login'">Login</a></li>
-                    <li><a onclick="location.href='/signup'">Signup</a></li>
+                    <!-- <li><a onclick="location.href='/about-us'">About Us</a></li> -->
+                    <?php if (isset($_SESSION["user"])) {
+                        echo "<li><a onclick=\"location.href='/logout'\">Logout</a></li>";
+                    } else {
+                        echo "<li><a onclick=\"location.href='/login'\">Login</a></li>";
+                        echo "<li><a onclick=\"location.href='/signup'\">Signup</a></li>";
+                    }?>
                 </ul>
             </div>
         </nav>

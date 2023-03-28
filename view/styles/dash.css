@@ -1,166 +1,75 @@
 button {
-	margin: 1rem;
-	padding: 1rem 2rem;
+  margin: 1rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 5px;
+  background-color: linear-gradient(to right, #c53b44, #fb9e61);
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .3s ease;
+  text-decoration: none;
+  max-width: 200px;
+  align-self: center
+}
+
+.animation-group {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.5s ease;
+	height: auto;
+}
+
+.invisible {
+	height: 0;
+	overflow: hidden;
+	transition: all 0.5s ease;
+}
+
+.user-data {
+  margin: 2rem;
+  padding: 2rem;
+  background: rgba(255,255,255,.65);
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.18)
+}
+.user-data th {
+  padding: .5rem;
+  text-align: left;
+  border-bottom: 1px solid #000
+}
+.user-data td {
+  padding: .5rem;
+  text-align: left
+}
+.user-data-wrapper {
+  width: 100vw;
+  background: #0003;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 12vh
+}
+
+input {
+	margin: 0.5rem;
+	padding: 1rem;
 	border: none;
 	border-radius: 5px;
-	/* background: #0006; */
+	background: #FFF9;
 	color: white;
 	font-size: 1.2rem;
 	font-weight: 600;
 	cursor: pointer;
 	transition: all 0.3s ease;
 	text-decoration: none;
-	max-width: 200px;
-	align-self: center;
-}
-
-.user-data {
-	margin: 2rem;
-	padding: 2rem;
-
-	background: rgba(255, 255, 255, 0.65);
-	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-	backdrop-filter: blur(4px);
-	-webkit-backdrop-filter: blur(4px);
-	border-radius: 10px;
-	border: 1px solid rgba(255, 255, 255, 0.18);
-}
-
-.user-data th {
-	padding: 0.5rem;
-	text-align: left;
-	border-bottom: 1px solid #000;
-}
-.user-data td {
-	padding: 0.5rem;
-	text-align: left;
-}
-
-.user-data-wrapper {
-	width: 100vw;
-	background: #0003;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	padding-top: 4vhpx;
-}
-
-.user-data-wrapper button {
-	padding: 0;
-}
-
-.user-data-wrapper input[type='checkbox'] {
-	display: block;
-	position: relative;
-	height: 40px;
-	width: 40px;
-
-	z-index: 5;
-	opacity: 0;
-}
-
-input[type='checkbox'] ~ .data-manipulator {
-	display: none;
-	transition: all 0.3s ease;
-}
-
-input[type='checkbox'] {
-	display: block;
-	position: relative;
-	top: 16vh;
-	left: 78vw;
-	z-index: 5;
-	appearance: none;
-	background-color: #fff;
-	margin: 0;
-	font: inherit;
-	color: currentColor;
-	width: 5.5em;
-	height: 3em;
-	border: 0.15em solid currentColor;
-	border-radius: 0.15em;
-	transform: translateY(-0.075em);
-	opacity: 0;
-}
-
-.data-reveal-label {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	height: 3em;
-	top: 8vh;
-	left: 78vw;
-	z-index: 4;
-	color: black;
-
-	font-weight: 800;
-	font-size: 1.2rem;
-	width: fit-content;
-	border-radius: 10px;
-	padding: 10px 15px;
-	border: none;
-	/* background: linear-gradient(to right, #c53b44, #fb9e61); */
-	cursor: pointer;
-}
-
-@media screen and (min-width: 1300px) {
-	input[type='checkbox'] {
-		top: 12rem;
-	}
-	.data-reveal-label {
-		top: 8rem;
-	}
-}
-
-@media screen and (max-width: 1300px) {
-	input[type='checkbox']:checked {
-		top: 40vh;
-	}
-
-	input[type='checkbox']:checked ~ .data-reveal-label {
-		top: 32vh;
-	}
-}
-
-input[type='checkbox']:checked ~ .data-manipulator {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 40px;
-	justify-content: center;
-	padding-top: 4%;
-}
-
-input[type='checkbox']:checked {
-	top: 48vh;
-}
-
-input[type='checkbox']:checked ~ .data-reveal-label {
-	top: 40vh;
-}
-
-.UserName {
-	position: relative;
-	left: 32%;
-	padding: 10px;
-	font-size: 2rem;
-	font-weight: 800;
-	color: #000;
-	border: #000 3px solid;
-}
-
-@media screen and (max-width: 800px) {
-	.UserName {
-		position: relative;
-		left: 20%;
-	}
-}
-
-@media screen and (max-width: 500px) {
-	.UserName {
-		position: relative;
-		left: 10%;
-	}
+	border-radius: 3px;
+	border: var(--button-color) 2px solid;
+  color: black;
 }
