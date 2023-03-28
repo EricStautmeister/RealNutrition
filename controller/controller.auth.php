@@ -90,8 +90,7 @@ class AuthController {
 
     public function loginDashboard($email) {
         $uid = $this->authModel->getUser($email)[0]["uid"];
-        $e = new DashboardController();
-        $e->loginUser($email, $uid);
+        DashboardController::loginUser($email, $uid);
         header("Location: /dashboard");
     }
 }

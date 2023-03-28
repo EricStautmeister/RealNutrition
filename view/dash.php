@@ -50,6 +50,17 @@ if (empty($_SESSION["user"])) {
 
     </div>
     <div class="user-data-wrapper">
+        <input type="checkbox" name="" id="">
+        <p class="data-reveal-label">Add Data</p>
+        <div class="data-manipulator">
+            <form action="/dashboard" method="post" autocomplete="off">
+                <input type="text" name="food">
+                <input type="number" step="0.1" name="calories">
+                <input type="submit" value="Upload">
+            </form>
+            <p class="UserName"><?php echo $_SESSION["user"] ?></p>
+        </div>
+
         <div class="animation-group">
             <button class="data-revealer">Add Data</button>
             <div class="data-manipulator invisible">
@@ -62,7 +73,10 @@ if (empty($_SESSION["user"])) {
             </div>
             <script>
                 const dataRevealLabel = document.querySelector(".data-revealer");
-                const dataManipulator = document.querySelector(".data-manipulator");
+                const dataManipulator = document.querySelector(".data-manipulator"); >>>
+                >>>
+                >
+                e778efca23ce720c7d2ea3ae40ece23889eed103
 
                 dataRevealLabel.addEventListener("click", () => {
                     if (dataManipulator.classList.contains("invisible")) {

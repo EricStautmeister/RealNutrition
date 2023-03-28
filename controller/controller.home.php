@@ -43,6 +43,7 @@
                     }
                 }
                 array_shift($food);
+                DashboardController::logoutUser();
                 $this->displayPage(["fooddata" => $food]);
             }
         }
